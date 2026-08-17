@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { truncate, formatPrice, getDifficultyLabel } from "@/lib/utils";
+import { cloudinaryCard } from "@/lib/cloudinary";
 import type { SafariSummary } from "@/types";
 
 interface SafariCardProps {
@@ -16,7 +17,7 @@ export default function SafariCard({ safari }: SafariCardProps) {
       <div className="relative aspect-[4/3] bg-gray-100">
         {safari.coverImageUrl ? (
           <Image
-            src={safari.coverImageUrl}
+            src={cloudinaryCard(safari.coverImageUrl)}
             alt={safari.name}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-300"

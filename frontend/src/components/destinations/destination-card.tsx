@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { truncate, formatPrice } from "@/lib/utils";
+import { cloudinaryCard } from "@/lib/cloudinary";
 import type { DestinationSummary } from "@/types";
 
 interface DestinationCardProps {
@@ -16,7 +17,7 @@ export default function DestinationCard({ destination }: DestinationCardProps) {
       <div className="relative aspect-[4/3] bg-gray-100">
         {destination.coverImageUrl ? (
           <Image
-            src={destination.coverImageUrl}
+            src={cloudinaryCard(destination.coverImageUrl)}
             alt={destination.name}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-300"

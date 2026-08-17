@@ -22,10 +22,9 @@ const app = new Hono<{ Bindings: Env; Variables: Variables }>();
 
 app.use("*", logger());
 app.use("*", cors({
-  origin: ["http://localhost:3000", "https://*.pages.dev", "https://*.workers.dev"],
+  origin: "*",
   allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowHeaders: ["Content-Type", "Authorization"],
-  credentials: true,
 }));
 
 app.get("/", (c) => c.json({ name: "Trek Rwanda API", version: "1.0.0", status: "ok" }));

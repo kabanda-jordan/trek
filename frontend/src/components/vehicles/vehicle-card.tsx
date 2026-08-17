@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { formatPrice, getVehicleTypeLabel } from "@/lib/utils";
+import { cloudinaryCard } from "@/lib/cloudinary";
 import type { Vehicle } from "@/types";
 
 interface VehicleCardProps {
@@ -16,7 +17,7 @@ export default function VehicleCard({ vehicle }: VehicleCardProps) {
       <div className="relative aspect-[4/3] bg-gray-100">
         {vehicle.coverImageUrl ? (
           <Image
-            src={vehicle.coverImageUrl}
+            src={cloudinaryCard(vehicle.coverImageUrl)}
             alt={vehicle.name}
             fill
             className="object-cover group-hover:scale-105 transition-transform duration-300"

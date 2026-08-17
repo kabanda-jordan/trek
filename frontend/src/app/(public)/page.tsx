@@ -1,27 +1,33 @@
 "use client";
 
 import Link from "next/link";
-import { useState, type ReactNode } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import HeroSlideshow from "@/components/HeroSlideshow";
+import { api } from "@/lib/api";
+import { cloudinaryCard } from "@/lib/cloudinary";
 
-const popularDestinations = [
-  { name: "Volcanoes National Park", slug: "volcanoes-national-park", region: "Northern Province", tagline: "Mountain gorillas & volcanic peaks" },
-  { name: "Akagera National Park", slug: "akagera-national-park", region: "Eastern Province", tagline: "Big Five savannah safari" },
-  { name: "Nyungwe National Park", slug: "nyungwe-national-park", region: "Western Province", tagline: "Ancient rainforest & canopy walk" },
-  { name: "Lake Kivu", slug: "lake-kivu", region: "Western Province", tagline: "Lakeside relaxation & adventure" },
-  { name: "Kigali", slug: "kigali", region: "Kigali", tagline: "Culture, history & innovation" },
-  { name: "Musanze", slug: "musanze", region: "Northern Province", tagline: "Caves, hikes & gorilla gateway" },
-];
+interface DestSummary {
+  id: string;
+  name: string;
+  slug: string;
+  shortDesc?: string;
+  location?: string;
+  province?: string;
+  coverImageUrl?: string;
+}
 
-const topSafaris = [
-  { name: "Gorilla Trekking", slug: "gorilla-trekking", days: 3, price: 1500, rating: 4.9, reviews: 342, tag: "Bestseller" },
-  { name: "Akagera Big Five Safari", slug: "akagera-safari", days: 2, price: 450, rating: 4.7, reviews: 186, tag: null },
-  { name: "Nyungwe Canopy Walk", slug: "nyungwe-canopy-walk", days: 1, price: 200, rating: 4.8, reviews: 224, tag: "Top Rated" },
-  { name: "Lake Kivu Adventure", slug: "lake-kivu-adventure", days: 3, price: 350, rating: 4.6, reviews: 98, tag: null },
-  { name: "Rwanda Cultural Immersion", slug: "cultural-immersion", days: 5, price: 800, rating: 4.8, reviews: 156, tag: "New" },
-  { name: "Golden Monkey Trek", slug: "golden-monkey-trek", days: 1, price: 250, rating: 4.7, reviews: 134, tag: null },
-];
+interface SafariSummary {
+  id: string;
+  name: string;
+  slug: string;
+  shortDesc?: string;
+  durationDays?: number;
+  price?: number;
+  averageRating?: number;
+  totalReviews?: number;
+  coverImageUrl?: string;
+}
 
 function Stars({ rating }: { rating: number }) {
   return (
@@ -35,27 +41,45 @@ function Stars({ rating }: { rating: number }) {
   );
 }
 
-const destIcons: Record<string, React.ReactNode> = {
-  volcanoes: <svg className="h-8 w-8 text-white/80" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M3 21l7.5-7.5L15 21M10.5 13.5L18 6l3 3-7.5 7.5" /></svg>,
-  akagera: <svg className="h-8 w-8 text-white/80" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" /></svg>,
-  nyungwe: <svg className="h-8 w-8 text-white/80" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" /></svg>,
-  kivu: <svg className="h-8 w-8 text-white/80" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" /></svg>,
-  kigali: <svg className="h-8 w-8 text-white/80" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m-.75 4.5H21m-3.75 3H21" /></svg>,
-  musanze: <svg className="h-8 w-8 text-white/80" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5"><path strokeLinecap="round" strokeLinejoin="round" d="M3 21l7.5-7.5L15 21M10.5 13.5L18 6l3 3-7.5 7.5" /></svg>,
-};
+const fallbackDestinations = [
+  { name: "Volcanoes National Park", slug: "volcanoes-national-park", location: "Northern Province", shortDesc: "Mountain gorillas & volcanic peaks" },
+  { name: "Akagera National Park", slug: "akagera-national-park", location: "Eastern Province", shortDesc: "Big Five savannah safari" },
+  { name: "Nyungwe National Park", slug: "nyungwe-national-park", location: "Western Province", shortDesc: "Ancient rainforest & canopy walk" },
+  { name: "Lake Kivu", slug: "lake-kivu", location: "Western Province", shortDesc: "Lakeside relaxation & adventure" },
+  { name: "Kigali", slug: "kigali", location: "Kigali", shortDesc: "Culture, history & innovation" },
+  { name: "Musanze", slug: "musanze", location: "Northern Province", shortDesc: "Caves, hikes & gorilla gateway" },
+];
 
-function getDestIcon(slug: string) {
-  if (slug.includes("volcanoes")) return destIcons.volcanoes;
-  if (slug.includes("akagera")) return destIcons.akagera;
-  if (slug.includes("nyungwe")) return destIcons.nyungwe;
-  if (slug.includes("kivu")) return destIcons.kivu;
-  if (slug.includes("kigali")) return destIcons.kigali;
-  return destIcons.musanze;
-}
+const fallbackSafaris = [
+  { name: "Gorilla Trekking", slug: "gorilla-trekking", durationDays: 3, price: 1500, averageRating: 4.9, totalReviews: 342, tag: "Bestseller" },
+  { name: "Akagera Big Five Safari", slug: "akagera-safari", durationDays: 2, price: 450, averageRating: 4.7, totalReviews: 186, tag: null },
+  { name: "Nyungwe Canopy Walk", slug: "nyungwe-canopy-walk", durationDays: 1, price: 200, averageRating: 4.8, totalReviews: 224, tag: "Top Rated" },
+  { name: "Lake Kivu Adventure", slug: "lake-kivu-adventure", durationDays: 3, price: 350, averageRating: 4.6, totalReviews: 98, tag: null },
+  { name: "Rwanda Cultural Immersion", slug: "cultural-immersion", durationDays: 5, price: 800, averageRating: 4.8, totalReviews: 156, tag: "New" },
+  { name: "Golden Monkey Trek", slug: "golden-monkey-trek", durationDays: 1, price: 250, averageRating: 4.7, totalReviews: 134, tag: null },
+];
 
 export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState("");
+  const [destinations, setDestinations] = useState<DestSummary[]>([]);
+  const [safaris, setSafaris] = useState<SafariSummary[]>([]);
   const router = useRouter();
+
+  useEffect(() => {
+    api.get<{ content: DestSummary[] }>("/destinations", { page: "0", size: "6" })
+      .then((res) => {
+        const items = res.content || [];
+        setDestinations(items.length > 0 ? items : fallbackDestinations as any);
+      })
+      .catch(() => setDestinations(fallbackDestinations as any));
+
+    api.get<{ content: SafariSummary[] }>("/safaris", { page: "0", size: "6" })
+      .then((res) => {
+        const items = res.content || [];
+        setSafaris(items.length > 0 ? items : fallbackSafaris as any);
+      })
+      .catch(() => setSafaris(fallbackSafaris as any));
+  }, []);
 
   function handleSearch(e: React.FormEvent) {
     e.preventDefault();
@@ -109,15 +133,17 @@ export default function HomePage() {
           <Link href="/destinations" className="text-sm font-medium text-emerald-700 hover:text-emerald-800 hidden sm:block">View all</Link>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {popularDestinations.map((d) => (
+          {destinations.map((d) => (
             <Link key={d.slug} href={`/destinations/${d.slug}`}
               className="group relative rounded-xl overflow-hidden bg-slate-100 aspect-[4/3] flex items-end">
+              {d.coverImageUrl ? (
+                <img src={cloudinaryCard(d.coverImageUrl)} alt={d.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              ) : null}
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent group-hover:from-emerald-900/80 transition-all duration-300" />
-              <div className="absolute top-4 left-4">{getDestIcon(d.slug)}</div>
               <div className="relative p-5 w-full">
-                <p className="text-xs font-medium text-emerald-300 uppercase tracking-wide">{d.region}</p>
+                <p className="text-xs font-medium text-emerald-300 uppercase tracking-wide">{d.location || d.province || "Rwanda"}</p>
                 <h3 className="text-lg font-bold text-white mt-1">{d.name}</h3>
-                <p className="text-sm text-gray-300 mt-0.5">{d.tagline}</p>
+                {d.shortDesc && <p className="text-sm text-gray-300 mt-0.5">{d.shortDesc}</p>}
               </div>
             </Link>
           ))}
@@ -138,25 +164,29 @@ export default function HomePage() {
             <Link href="/safaris" className="text-sm font-medium text-emerald-700 hover:text-emerald-800 hidden sm:block">View all</Link>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {topSafaris.map((s) => (
+            {safaris.map((s) => (
               <Link key={s.slug} href={`/safaris/${s.slug}`}
                 className="group bg-white rounded-xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition-all duration-300">
                 <div className="relative aspect-[16/10] bg-gradient-to-br from-slate-100 to-slate-200">
-                  {s.tag && (
-                    <span className="absolute top-3 left-3 bg-slate-900 text-white text-xs font-medium px-2.5 py-1 rounded">{s.tag}</span>
+                  {s.coverImageUrl && (
+                    <img src={cloudinaryCard(s.coverImageUrl)} alt={s.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   )}
                 </div>
                 <div className="p-4">
                   <div className="flex items-center gap-2 mb-2">
-                    <Stars rating={s.rating} />
-                    <span className="text-xs text-slate-500">{s.rating} ({s.reviews})</span>
+                    <Stars rating={s.averageRating || 0} />
+                    <span className="text-xs text-slate-500">{s.averageRating || "N/A"} {s.totalReviews ? `(${s.totalReviews})` : ""}</span>
                   </div>
                   <h3 className="font-semibold text-slate-900 group-hover:text-emerald-700 transition-colors">{s.name}</h3>
-                  <p className="mt-1 text-sm text-slate-500">{s.days} {s.days === 1 ? "day" : "days"}</p>
+                  <p className="mt-1 text-sm text-slate-500">{s.durationDays || 1} {(s.durationDays || 1) === 1 ? "day" : "days"}</p>
                   <div className="mt-3 flex items-center justify-between">
                     <div>
-                      <span className="text-xl font-bold text-slate-900">${s.price.toLocaleString()}</span>
-                      <span className="text-xs text-slate-500 ml-1">/ person</span>
+                      {s.price != null && (
+                        <>
+                          <span className="text-xl font-bold text-slate-900">${s.price.toLocaleString()}</span>
+                          <span className="text-xs text-slate-500 ml-1">/ person</span>
+                        </>
+                      )}
                     </div>
                     <span className="text-sm font-medium text-emerald-700 group-hover:underline">Details</span>
                   </div>
