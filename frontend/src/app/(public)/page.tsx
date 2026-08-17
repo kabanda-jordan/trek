@@ -42,36 +42,36 @@ function Stars({ rating }: { rating: number }) {
 }
 
 const fallbackDestinations = [
-  { name: "Volcanoes National Park", slug: "volcanoes-national-park", location: "Northern Province", shortDesc: "Mountain gorillas & volcanic peaks", coverImageUrl: "https://images.unsplash.com/photo-1521651201144-634f700b36ef?w=800&h=600&fit=crop" },
+  { name: "Volcanoes National Park", slug: "volcanoes-national-park", location: "Northern Province", shortDesc: "Mountain gorillas & volcanic peaks", coverImageUrl: "https://images.unsplash.com/photo-1722291731448-3afe029611a6?w=800&h=600&fit=crop" },
   { name: "Akagera National Park", slug: "akagera-national-park", location: "Eastern Province", shortDesc: "Big Five savannah safari", coverImageUrl: "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=800&h=600&fit=crop" },
   { name: "Nyungwe National Park", slug: "nyungwe-national-park", location: "Western Province", shortDesc: "Ancient rainforest & canopy walk", coverImageUrl: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&h=600&fit=crop" },
-  { name: "Lake Kivu", slug: "lake-kivu", location: "Western Province", shortDesc: "Lakeside relaxation & adventure", coverImageUrl: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop" },
-  { name: "Kigali", slug: "kigali", location: "Kigali", shortDesc: "Culture, history & innovation", coverImageUrl: "https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=800&h=600&fit=crop" },
+  { name: "Lake Kivu", slug: "lake-kivu", location: "Western Province", shortDesc: "Lakeside relaxation & adventure", coverImageUrl: "https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&h=600&fit=crop" },
+  { name: "Kigali", slug: "kigali", location: "Kigali", shortDesc: "Culture, history & innovation", coverImageUrl: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800&h=600&fit=crop" },
   { name: "Musanze", slug: "musanze", location: "Northern Province", shortDesc: "Caves, hikes & gorilla gateway", coverImageUrl: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&h=600&fit=crop" },
 ];
 
 const fallbackSafaris = [
-  { name: "Gorilla Trekking", slug: "gorilla-trekking", durationDays: 3, price: 1500, averageRating: 4.9, totalReviews: 342, tag: "Bestseller", coverImageUrl: "https://images.unsplash.com/photo-1521651201144-634f700b36ef?w=800&h=600&fit=crop" },
-  { name: "Akagera Big Five Safari", slug: "akagera-safari", durationDays: 2, price: 450, averageRating: 4.7, totalReviews: 186, tag: null, coverImageUrl: "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=800&h=600&fit=crop" },
-  { name: "Nyungwe Canopy Walk", slug: "nyungwe-canopy-walk", durationDays: 1, price: 200, averageRating: 4.8, totalReviews: 224, tag: "Top Rated", coverImageUrl: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&h=600&fit=crop" },
-  { name: "Lake Kivu Adventure", slug: "lake-kivu-adventure", durationDays: 3, price: 350, averageRating: 4.6, totalReviews: 98, tag: null, coverImageUrl: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop" },
+  { name: "Gorilla Trekking", slug: "gorilla-trekking", durationDays: 3, price: 1500, averageRating: 4.9, totalReviews: 342, tag: "Bestseller", coverImageUrl: "https://images.unsplash.com/photo-1605559911928-e03606ea0dc0?w=800&h=600&fit=crop" },
+  { name: "Akagera Big Five Safari", slug: "akagera-safari", durationDays: 2, price: 450, averageRating: 4.7, totalReviews: 186, tag: null, coverImageUrl: "https://images.unsplash.com/photo-1546422737-ac2ae13984ba?w=800&h=600&fit=crop" },
+  { name: "Nyungwe Canopy Walk", slug: "nyungwe-canopy-walk", durationDays: 1, price: 200, averageRating: 4.8, totalReviews: 224, tag: "Top Rated", coverImageUrl: "https://images.unsplash.com/photo-1761744361365-a62439c36665?w=800&h=600&fit=crop" },
+  { name: "Lake Kivu Adventure", slug: "lake-kivu-adventure", durationDays: 3, price: 350, averageRating: 4.6, totalReviews: 98, tag: null, coverImageUrl: "https://images.unsplash.com/photo-1505765050516-f72dcac9c60e?w=800&h=600&fit=crop" },
   { name: "Rwanda Cultural Immersion", slug: "cultural-immersion", durationDays: 5, price: 800, averageRating: 4.8, totalReviews: 156, tag: "New", coverImageUrl: "https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=800&h=600&fit=crop" },
-  { name: "Golden Monkey Trek", slug: "golden-monkey-trek", durationDays: 1, price: 250, averageRating: 4.7, totalReviews: 134, tag: null, coverImageUrl: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&h=600&fit=crop" },
+  { name: "Golden Monkey Trek", slug: "golden-monkey-trek", durationDays: 1, price: 250, averageRating: 4.7, totalReviews: 134, tag: null, coverImageUrl: "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800&h=600&fit=crop" },
 ];
 
 const defaultCoverImages: Record<string, string> = {
-  "volcanoes-national-park": "https://images.unsplash.com/photo-1521651201144-634f700b36ef?w=800&h=600&fit=crop",
+  "volcanoes-national-park": "https://images.unsplash.com/photo-1722291731448-3afe029611a6?w=800&h=600&fit=crop",
   "akagera-national-park": "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=800&h=600&fit=crop",
   "nyungwe-national-park": "https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&h=600&fit=crop",
-  "lake-kivu": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
-  "kigali": "https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=800&h=600&fit=crop",
+  "lake-kivu": "https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&h=600&fit=crop",
+  "kigali": "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800&h=600&fit=crop",
   "musanze": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&h=600&fit=crop",
-  "gorilla-trekking": "https://images.unsplash.com/photo-1521651201144-634f700b36ef?w=800&h=600&fit=crop",
-  "akagera-safari": "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=800&h=600&fit=crop",
-  "nyungwe-canopy": "https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&h=600&fit=crop",
-  "lake-kivu-adventure": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
+  "gorilla-trekking": "https://images.unsplash.com/photo-1605559911928-e03606ea0dc0?w=800&h=600&fit=crop",
+  "akagera-safari": "https://images.unsplash.com/photo-1546422737-ac2ae13984ba?w=800&h=600&fit=crop",
+  "nyungwe-canopy": "https://images.unsplash.com/photo-1761744361365-a62439c36665?w=800&h=600&fit=crop",
+  "lake-kivu-adventure": "https://images.unsplash.com/photo-1505765050516-f72dcac9c60e?w=800&h=600&fit=crop",
   "cultural-immersion": "https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=800&h=600&fit=crop",
-  "golden-monkey-trek": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&h=600&fit=crop",
+  "golden-monkey-trek": "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800&h=600&fit=crop",
   "_default": "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=800&h=600&fit=crop",
 };
 
