@@ -3,9 +3,9 @@ spring:
     name: trek-rwanda
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/trek_rwanda
-    username: postgres
-    password: lock-123
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/trek_rwanda}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:lock-123}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -27,10 +27,10 @@ spring:
       max-request-size: 10MB
 
 server:
-  port: 8080
+  port: ${PORT:8080}
 
 app:
   jwt:
-    secret: mySecretKeyForJwtTokenGenerationThatIsLongEnoughForHS256Algorithm2026TrekRwanda
+    secret: ${JWT_SECRET:mySecretKeyForJwtTokenGenerationThatIsLongEnoughForHS256Algorithm2026TrekRwanda}
     expiration: 86400000
     refresh-expiration: 604800000
