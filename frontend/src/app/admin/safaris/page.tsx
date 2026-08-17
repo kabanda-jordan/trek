@@ -78,7 +78,7 @@ export default function AdminSafarisPage() {
                       </button>
                     </td>
                     <td className="px-6 py-4 space-x-3">
-                      <button className="text-emerald-700 hover:text-emerald-800 font-medium">Edit</button>
+                      <button onClick={() => router.push(`/admin/safaris/edit?id=${s.id}`)} className="text-emerald-700 hover:text-emerald-800 font-medium">Edit</button>
                       <button onClick={() => deleteSafari(s.id)} className="text-red-600 hover:text-red-700 font-medium">Delete</button>
                     </td>
                   </tr>
