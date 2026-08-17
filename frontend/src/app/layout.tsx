@@ -17,14 +17,14 @@ export const metadata: Metadata = {
   title: "Trek Rwanda — Discover Rwanda's Tourism",
   description:
     "Explore Rwanda's stunning destinations, gorilla trekking safaris, and tourism vehicles. Plan your Rwanda adventure today.",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
-      <head>
-        <script src="https://widget.cloudinary.com/v2.0/all.js" async></script>
-      </head>
       <body className="min-h-full flex flex-col bg-white text-gray-900">
         <AuthProvider>{children}</AuthProvider>
       </body>

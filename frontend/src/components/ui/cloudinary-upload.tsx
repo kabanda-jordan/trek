@@ -1,12 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
-
-declare global {
-  interface Window {
-    cloudinary: any;
-  }
-}
+import { useRef, useState } from "react";
 
 interface CloudinaryUploadProps {
   cloudName: string;
@@ -25,94 +19,49 @@ export default function CloudinaryUpload({
   className = "",
   label = "Upload Image",
 }: CloudinaryUploadProps) {
-  const [widgetReady, setWidgetReady] = useState(false);
   const [uploading, setUploading] = useState(false);
-  const widgetRef = useRef<any>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    function loadWidget() {
-      if (window.cloudinary) {
-        setWidgetReady(true);
-        return;
-      }
-
-      const existingScript = document.getElementById("cloudinary-widget-script");
-      if (existingScript) {
-        existingScript.addEventListener("load", () => setWidgetReady(true));
-        return;
-      }
-
-      const script = document.createElement("script");
-      script.id = "cloudinary-widget-script";
-      script.src = "https://widget.cloudinary.com/v2.0/all.js";
-      script.async = true;
-      script.onload = () => setWidgetReady(true);
-      script.onerror = () => {
-        console.error("Failed to load Cloudinary widget script");
-      };
-      document.body.appendChild(script);
-    }
-
-    loadWidget();
-  }, []);
-
-  const openWidget = useCallback(() => {
-    if (!window.cloudinary) {
-      const script = document.getElementById("cloudinary-widget-script");
-      if (script) {
-        script.addEventListener("load", () => openWidget());
-      } else {
-        alert("Upload widget failed to load. Please refresh the page and try again.");
-      }
-      return;
-    }
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
 
     setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", uploadPreset);
+      if (folder) formData.append("folder", folder);
 
-    const widget = window.cloudinary.createUploadWidget(
-      {
-        cloudName,
-        uploadPreset,
-        folder: folder || "trek-rwanda",
-        sources: ["local", "camera", "url"],
-        multiple: false,
-        maxFiles: 1,
-        cropping: true,
-        croppingAspectRatio: 16 / 9,
-        styles: {
-          palette: {
-            window: "#ffffff",
-            sourceBg: "#f4f4f5",
-            windowBorder: "#e4e4e7",
-            tabIcon: "#16a34a",
-            inactiveTabIcon: "#a1a1aa",
-            menuIcons: "#52525b",
-            link: "#16a34a",
-            action: "#16a34a",
-            inactive: "#a1a1aa",
-          },
-        },
-      },
-      (error: any, result: any) => {
-        if (!error && result && result.event === "success") {
-          onUpload(result.info.secure_url);
-        }
-        if (result && result.event === "close") {
-          setUploading(false);
-        }
-      }
-    );
+      const res = await fetch(
+        `https://api.cloudinary.com/v1_1/${cloudName}/upload`,
+        { method: "POST", body: formData }
+      );
 
-    widget.open();
-    setUploading(false);
-  }, [cloudName, uploadPreset, folder, onUpload, widgetReady]);
+      if (!res.ok) throw new Error("Upload failed");
+      const data = await res.json();
+      onUpload(data.secure_url);
+    } catch (err) {
+      alert("Image upload failed. Please try again.");
+    } finally {
+      setUploading(false);
+      if (inputRef.current) inputRef.current.value = "";
+    }
+  };
 
   return (
-    <div ref={containerRef}>
+    <div>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        onChange={handleFileChange}
+        className="hidden"
+        id={`upload-${folder || "general"}`}
+      />
       <button
         type="button"
-        onClick={openWidget}
+        onClick={() => inputRef.current?.click()}
         disabled={uploading}
         className={`inline-flex items-center gap-2 rounded-lg border-2 border-dashed border-slate-300 px-4 py-3 text-sm font-medium text-slate-600 hover:border-emerald-400 hover:text-emerald-600 hover:bg-emerald-50 transition-colors disabled:opacity-50 ${className}`}
       >
