@@ -36,7 +36,7 @@ export default function AdminBookingsPage() {
   return (
     <>
       <PageHeader title="Bookings" description="Manage customer reservations" />
-      <div className="flex gap-2 mb-6">
+      <div className="flex flex-wrap gap-2 mb-6">
         {statusFilters.map((s) => (
           <button
             key={s}

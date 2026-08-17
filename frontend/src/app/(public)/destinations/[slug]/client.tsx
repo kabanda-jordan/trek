@@ -53,7 +53,7 @@ export default function DestinationDetailClient({ params }: { params: Promise<{ 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
         <div className="animate-pulse space-y-6">
           <div className="h-4 bg-slate-200 rounded w-48" />
-          <div className="rounded-2xl bg-slate-200 aspect-[21/9]" />
+          <div className="rounded-2xl bg-slate-200 aspect-[16/9] md:aspect-[21/9]" />
           <div className="h-8 bg-slate-200 rounded w-64" />
           <div className="h-4 bg-slate-200 rounded w-full" />
           <div className="h-4 bg-slate-200 rounded w-3/4" />
@@ -73,21 +73,21 @@ export default function DestinationDetailClient({ params }: { params: Promise<{ 
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
-      <nav className="text-sm text-gray-500 mb-6">
+      <nav className="text-sm text-gray-500 mb-6 overflow-x-auto whitespace-nowrap">
         <Link href="/" className="hover:text-emerald-700">Home</Link>
         <span className="mx-2">/</span>
         <Link href="/destinations" className="hover:text-emerald-700">Destinations</Link>
         <span className="mx-2">/</span>
-        <span className="text-gray-900 font-medium">{dest.name}</span>
+        <span className="text-gray-900 font-medium truncate">{dest.name}</span>
       </nav>
 
-      <div className="rounded-2xl overflow-hidden aspect-[21/9] bg-slate-100 relative">
+      <div className="rounded-2xl overflow-hidden aspect-[16/9] md:aspect-[21/9] bg-slate-100 relative">
         <img src={heroImg} alt={dest.name} className="w-full h-full object-cover" />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mt-8">
         <div className="lg:col-span-2">
-          <h1 className="text-3xl font-bold text-gray-900">{dest.name}</h1>
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">{dest.name}</h1>
           <p className="mt-1 text-gray-500">{dest.location}{dest.province ? `, ${dest.province} Province` : ""}</p>
 
           {dest.description && (
@@ -130,7 +130,7 @@ export default function DestinationDetailClient({ params }: { params: Promise<{ 
         </div>
 
         <div className="lg:col-span-1">
-          <div className="rounded-2xl border border-gray-200 p-6 sticky top-20">
+          <div className="rounded-2xl border border-gray-200 p-6 lg:sticky lg:top-20">
             <h3 className="font-semibold text-gray-900 mb-4">Visitor Information</h3>
             <div className="space-y-3 text-sm">
               {dest.openingHours && (

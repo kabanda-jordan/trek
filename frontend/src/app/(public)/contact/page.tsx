@@ -1,10 +1,10 @@
 export default function ContactPage() {
   return (
     <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-16">
-      <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Contact Us</h1>
+      <h1 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">Contact Us</h1>
       <p className="mt-2 text-sm text-slate-500">Get in touch with our team for bookings, inquiries, or support.</p>
 
-      <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-10">
+      <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
         <div className="space-y-6">
           <div>
             <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wider mb-3">General Inquiries</h3>

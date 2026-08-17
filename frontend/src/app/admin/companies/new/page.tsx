@@ -48,7 +48,7 @@ export default function AdminCompaniesNewPage() {
               <label className="block text-sm font-medium text-slate-700 mb-1">Description</label>
               <textarea rows={3} value={form.description} onChange={(e) => set("description", e.target.value)} className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" />
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Phone</label>
                 <input type="tel" value={form.phone} onChange={(e) => set("phone", e.target.value)} placeholder="+250788123456" className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" />
@@ -58,7 +58,7 @@ export default function AdminCompaniesNewPage() {
                 <input type="email" value={form.email} onChange={(e) => set("email", e.target.value)} placeholder="info@company.rw" className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" />
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Website</label>
                 <input type="url" value={form.website} onChange={(e) => set("website", e.target.value)} placeholder="https://..." className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" />

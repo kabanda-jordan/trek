@@ -12,7 +12,7 @@ export default function BookingConfirmation({ bookingRef }: BookingConfirmationP
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
         </svg>
       </div>
-      <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Booking Submitted</h1>
+      <h1 className="text-2xl md:text-3xl font-bold text-slate-900 tracking-tight">Booking Submitted</h1>
       <p className="mt-4 text-slate-600 max-w-md mx-auto">
         Your booking request has been received. We will confirm your reservation via email shortly.
       </p>

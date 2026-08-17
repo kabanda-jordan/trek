@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useAuth } from "@/hooks/use-auth";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -15,52 +16,56 @@ const sidebarLinks = [
   { href: "/admin/users", label: "Users", icon: "M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" },
 ];
 
-export default function AdminSidebar() {
+export default function AdminSidebar({ open, onClose }: { open: boolean; onClose: () => void }) {
   const pathname = usePathname();
   const { user, logout } = useAuth();
 
   return (
-    <aside className="fixed left-0 top-0 z-40 h-screen w-64 bg-gray-900 text-white flex flex-col">
-      <div className="flex h-16 items-center px-6 border-b border-gray-800">
-        <Link href="/admin" className="text-lg font-bold text-emerald-400">
-          Trek Rwanda
-        </Link>
-        <span className="ml-2 text-xs bg-slate-700 text-emerald-300 px-2 py-0.5 rounded">
-          Admin
-        </span>
-      </div>
+    <>
+      {open && <div className="fixed inset-0 bg-black/50 z-30 md:hidden" onClick={onClose} />}
+      <aside className={`fixed left-0 top-0 z-40 h-screen w-64 bg-gray-900 text-white flex flex-col transition-transform duration-200 ${open ? "translate-x-0" : "-translate-x-full"} md:translate-x-0`}>
+        <div className="flex h-16 items-center px-6 border-b border-gray-800">
+          <Link href="/admin" className="text-lg font-bold text-emerald-400" onClick={onClose}>
+            Trek Rwanda
+          </Link>
+          <span className="ml-2 text-xs bg-slate-700 text-emerald-300 px-2 py-0.5 rounded">
+            Admin
+          </span>
+        </div>
 
-      <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
-        {sidebarLinks.map((link) => {
-          const isActive = pathname === link.href || (link.href !== "/admin" && pathname.startsWith(link.href));
-          return (
-            <Link
-              key={link.href}
-              href={link.href}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
-                isActive
-                  ? "bg-emerald-800/50 text-emerald-300"
-                  : "text-gray-400 hover:bg-gray-800 hover:text-white"
-              }`}
-            >
-              <svg className="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={link.icon} />
-              </svg>
-              {link.label}
-            </Link>
-          );
-        })}
-      </nav>
+        <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+          {sidebarLinks.map((link) => {
+            const isActive = pathname === link.href || (link.href !== "/admin" && pathname.startsWith(link.href));
+            return (
+              <Link
+                key={link.href}
+                href={link.href}
+                onClick={onClose}
+                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
+                  isActive
+                    ? "bg-emerald-800/50 text-emerald-300"
+                    : "text-gray-400 hover:bg-gray-800 hover:text-white"
+                }`}
+              >
+                <svg className="h-5 w-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={link.icon} />
+                </svg>
+                {link.label}
+              </Link>
+            );
+          })}
+        </nav>
 
-      <div className="border-t border-gray-800 p-4">
-        <div className="text-sm text-gray-400 mb-2">{user?.name}</div>
-        <button
-          onClick={logout}
-          className="w-full text-left text-sm text-gray-500 hover:text-red-400 transition-colors"
-        >
-          Logout
-        </button>
-      </div>
-    </aside>
+        <div className="border-t border-gray-800 p-4">
+          <div className="text-sm text-gray-400 mb-2">{user?.name}</div>
+          <button
+            onClick={logout}
+            className="w-full text-left text-sm text-gray-500 hover:text-red-400 transition-colors"
+          >
+            Logout
+          </button>
+        </div>
+      </aside>
+    </>
   );
 }

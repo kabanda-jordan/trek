@@ -80,7 +80,7 @@ export default function AdminBookingDetailPage() {
           <Card>
             <CardContent>
               <h3 className="text-sm font-semibold text-slate-900 mb-4">Booking Details</h3>
-              <div className="grid grid-cols-2 gap-4 text-sm">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                 <div>
                   <span className="text-slate-500">Status</span>
                   <div className="mt-1">

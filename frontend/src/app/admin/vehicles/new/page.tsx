@@ -49,7 +49,7 @@ export default function AdminVehiclesNewPage() {
       <Card>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl">
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Name *</label>
                 <input type="text" value={form.name} onChange={(e) => set("name", e.target.value)} placeholder="e.g. Toyota Land Cruiser" className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" />
@@ -66,7 +66,7 @@ export default function AdminVehiclesNewPage() {
                 </select>
               </div>
             </div>
-            <div className="grid grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Brand</label>
                 <input type="text" value={form.brand} onChange={(e) => set("brand", e.target.value)} placeholder="e.g. Toyota" className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" />
@@ -84,7 +84,7 @@ export default function AdminVehiclesNewPage() {
                 <input type="number" min={1} value={form.seats} onChange={(e) => set("seats", Number(e.target.value))} className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" />
               </div>
             </div>
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Transmission</label>
                 <select value={form.transmission} onChange={(e) => set("transmission", e.target.value)} className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500">
@@ -106,7 +106,7 @@ export default function AdminVehiclesNewPage() {
                 <input type="number" min={0} value={form.pricePerDay} onChange={(e) => set("pricePerDay", e.target.value)} className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" />
               </div>
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Features</label>
                 <textarea rows={3} value={form.features} onChange={(e) => set("features", e.target.value)} placeholder="AC, GPS, 4WD, etc." className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500" />

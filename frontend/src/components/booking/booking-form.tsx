@@ -105,7 +105,7 @@ export default function BookingForm({ safaris, vehicles, onSubmitted }: BookingF
         {step === 2 && (
           <div className="space-y-5">
             <h3 className="text-base font-semibold text-slate-900">Choose Dates</h3>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1.5">Start Date *</label>
                 <input type="date" value={form.startDate} onChange={(e) => set("startDate", e.target.value)} className="w-full rounded-md border border-slate-300 px-3 py-2.5 text-sm focus:border-slate-900 focus:ring-1 focus:ring-slate-900 focus:outline-none" />
@@ -128,7 +128,7 @@ export default function BookingForm({ safaris, vehicles, onSubmitted }: BookingF
         {step === 3 && (
           <form onSubmit={handleSubmit} className="space-y-5">
             <h3 className="text-base font-semibold text-slate-900">Your Information</h3>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1.5">Full Name *</label>
                 <input type="text" value={form.customerName} onChange={(e) => set("customerName", e.target.value)} className="w-full rounded-md border border-slate-300 px-3 py-2.5 text-sm focus:border-slate-900 focus:ring-1 focus:ring-slate-900 focus:outline-none" />

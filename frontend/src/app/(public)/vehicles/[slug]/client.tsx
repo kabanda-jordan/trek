@@ -48,7 +48,7 @@ export default function VehicleDetailClient({ params }: { params: Promise<{ slug
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
         <div className="animate-pulse space-y-6">
           <div className="h-4 bg-slate-200 rounded w-48" />
-          <div className="rounded-2xl bg-slate-200 aspect-[21/9]" />
+          <div className="rounded-2xl bg-slate-200 aspect-[16/9] md:aspect-[21/9]" />
           <div className="h-8 bg-slate-200 rounded w-64" />
         </div>
       </div>
@@ -66,15 +66,15 @@ export default function VehicleDetailClient({ params }: { params: Promise<{ slug
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
-      <nav className="text-sm text-slate-500 mb-6">
+      <nav className="text-sm text-slate-500 mb-6 overflow-x-auto whitespace-nowrap">
         <Link href="/" className="hover:text-emerald-700">Home</Link>
         <span className="mx-2">/</span>
         <Link href="/vehicles" className="hover:text-emerald-700">Vehicles</Link>
         <span className="mx-2">/</span>
-        <span className="text-slate-900 font-medium">{vehicle.name}</span>
+        <span className="text-slate-900 font-medium truncate">{vehicle.name}</span>
       </nav>
 
-      <div className="rounded-2xl overflow-hidden aspect-[21/9] bg-slate-100 relative">
+      <div className="rounded-2xl overflow-hidden aspect-[16/9] md:aspect-[21/9] bg-slate-100 relative">
         <img src={heroImg} alt={vehicle.name} className="w-full h-full object-cover" />
       </div>
 
@@ -84,7 +84,7 @@ export default function VehicleDetailClient({ params }: { params: Promise<{ slug
             <span className="bg-slate-100 text-slate-700 text-xs font-bold px-2.5 py-1 rounded-full">{getVehicleTypeLabel(vehicle.type)}</span>
             {!vehicle.isAvailable && <span className="bg-red-50 text-red-700 text-xs font-bold px-2.5 py-1 rounded-full">Unavailable</span>}
           </div>
-          <h1 className="text-3xl font-bold text-slate-900">{vehicle.name}</h1>
+          <h1 className="text-2xl md:text-3xl font-bold text-slate-900">{vehicle.name}</h1>
           <p className="text-slate-500 mt-1">{vehicle.company?.name || "Rental Partner"}</p>
 
           <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -112,7 +112,7 @@ export default function VehicleDetailClient({ params }: { params: Promise<{ slug
             </div>
           </div>
 
-          <div className="mt-6 grid grid-cols-2 gap-4">
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div className="rounded-xl bg-slate-50 p-4">
               <p className="text-xs text-slate-500 mb-1">Transmission</p>
               <p className="font-semibold text-slate-900">{vehicle.transmission}</p>
@@ -136,10 +136,10 @@ export default function VehicleDetailClient({ params }: { params: Promise<{ slug
         </div>
 
         <div className="lg:col-span-1">
-          <div className="rounded-2xl border border-slate-200 p-6 sticky top-20">
+          <div className="rounded-2xl border border-slate-200 p-6 lg:sticky lg:top-20">
             <div className="text-center">
               <p className="text-sm text-slate-500">From</p>
-              <p className="text-3xl font-bold text-slate-900">{formatPrice(vehicle.pricePerDay, vehicle.currency)}/day</p>
+              <p className="text-2xl md:text-3xl font-bold text-slate-900">{formatPrice(vehicle.pricePerDay, vehicle.currency)}/day</p>
             </div>
             <div className="mt-4 space-y-2 text-sm text-slate-600">
               <div className="flex justify-between"><span>Type</span><span className="font-medium">{getVehicleTypeLabel(vehicle.type)}</span></div>

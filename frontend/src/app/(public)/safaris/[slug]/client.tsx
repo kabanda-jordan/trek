@@ -60,7 +60,7 @@ export default function SafariDetailClient({ params }: { params: Promise<{ slug:
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
         <div className="animate-pulse space-y-6">
           <div className="h-4 bg-slate-200 rounded w-48" />
-          <div className="rounded-2xl bg-slate-200 aspect-[21/9]" />
+          <div className="rounded-2xl bg-slate-200 aspect-[16/9] md:aspect-[21/9]" />
           <div className="h-8 bg-slate-200 rounded w-64" />
           <div className="h-4 bg-slate-200 rounded w-full" />
         </div>
@@ -79,15 +79,15 @@ export default function SafariDetailClient({ params }: { params: Promise<{ slug:
 
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
-      <nav className="text-sm text-gray-500 mb-6">
+      <nav className="text-sm text-gray-500 mb-6 overflow-x-auto whitespace-nowrap">
         <Link href="/" className="hover:text-emerald-700">Home</Link>
         <span className="mx-2">/</span>
         <Link href="/safaris" className="hover:text-emerald-700">Safaris</Link>
         <span className="mx-2">/</span>
-        <span className="text-gray-900 font-medium">{safari.name}</span>
+        <span className="text-gray-900 font-medium truncate">{safari.name}</span>
       </nav>
 
-      <div className="rounded-2xl overflow-hidden aspect-[21/9] bg-slate-100 relative">
+      <div className="rounded-2xl overflow-hidden aspect-[16/9] md:aspect-[21/9] bg-slate-100 relative">
         <img src={heroImg} alt={safari.name} className="w-full h-full object-cover" />
       </div>
 
@@ -97,7 +97,7 @@ export default function SafariDetailClient({ params }: { params: Promise<{ slug:
             <span className="bg-amber-50 text-amber-700 text-xs font-bold px-2.5 py-1 rounded-full">{getDifficultyLabel(safari.difficultyLevel)}</span>
             <span className="text-sm text-gray-500">{safari.durationDays} days / {safari.durationNights} nights</span>
           </div>
-          <h1 className="text-3xl font-bold text-gray-900">{safari.name}</h1>
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">{safari.name}</h1>
           {safari.averageRating > 0 && (
             <div className="flex items-center gap-2 mt-2">
               <div className="flex gap-0.5">{[1,2,3,4,5].map(i => <svg key={i} className={`h-4 w-4 ${i <= Math.round(safari.averageRating) ? "text-amber-400" : "text-gray-300"}`} fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.538 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>)}</div>
@@ -120,7 +120,7 @@ export default function SafariDetailClient({ params }: { params: Promise<{ slug:
           )}
 
           {(included.length > 0 || excluded.length > 0) && (
-            <div className="mt-8 grid grid-cols-2 gap-4">
+            <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4">
               {included.length > 0 && (
                 <div className="rounded-xl bg-emerald-50 p-4">
                   <h3 className="text-sm font-semibold text-emerald-800 mb-2">What&apos;s Included</h3>
@@ -163,10 +163,10 @@ export default function SafariDetailClient({ params }: { params: Promise<{ slug:
         </div>
 
         <div className="lg:col-span-1">
-          <div className="rounded-2xl border border-gray-200 p-6 sticky top-20">
+          <div className="rounded-2xl border border-gray-200 p-6 lg:sticky lg:top-20">
             <div className="text-center">
               <p className="text-sm text-gray-500">From</p>
-              <p className="text-3xl font-bold text-gray-900">{formatPrice(safari.price, safari.currency)}</p>
+              <p className="text-2xl md:text-3xl font-bold text-gray-900">{formatPrice(safari.price, safari.currency)}</p>
               <p className="text-sm text-gray-500">per person</p>
             </div>
             <div className="mt-4 space-y-2 text-sm text-gray-600">
