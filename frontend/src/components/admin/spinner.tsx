@@ -1,0 +1,35 @@
+export function Spinner({ size = "md", className = "" }: { size?: "sm" | "md" | "lg"; className?: string }) {
+  const sizes = { sm: "h-4 w-4", md: "h-6 w-6", lg: "h-8 w-8" };
+  return (
+    <svg className={`animate-spin text-slate-400 ${sizes[size]} ${className}`} fill="none" viewBox="0 0 24 24">
+      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+    </svg>
+  );
+}
+
+export function LoadingOverlay({ message = "Loading..." }: { message?: string }) {
+  return (
+    <div className="flex items-center justify-center py-20">
+      <Spinner size="lg" />
+      <span className="ml-3 text-sm text-slate-500">{message}</span>
+    </div>
+  );
+}
+
+export function LoadingBar() {
+  return (
+    <div className="fixed top-0 left-0 right-0 z-50 h-0.5 bg-slate-200 overflow-hidden">
+      <div className="h-full bg-emerald-600 animate-[loading_1.5s_ease-in-out_infinite]" style={{
+        animation: "loading 1.5s ease-in-out infinite",
+      }} />
+      <style jsx>{`
+        @keyframes loading {
+          0% { width: 0%; margin-left: 0; }
+          50% { width: 60%; margin-left: 20%; }
+          100% { width: 0%; margin-left: 100%; }
+        }
+      `}</style>
+    </div>
+  );
+}
