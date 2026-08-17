@@ -1,0 +1,28 @@
+{
+  "name": "trek-rwanda-api",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:generate": "drizzle-kit generate",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
+    "db:migrate": "src/db/migrate.ts"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^0.10.0",
+    "bcryptjs": "^2.4.3",
+    "drizzle-orm": "^0.38.0",
+    "hono": "^4.6.0",
+    "jose": "^6.0.0",
+    "nanoid": "^5.0.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20241230.0",
+    "@types/bcryptjs": "^2.4.6",
+    "drizzle-kit": "^0.30.0",
+    "typescript": "^5.7.0",
+    "wrangler": "^3.100.0"
+  }
+}
