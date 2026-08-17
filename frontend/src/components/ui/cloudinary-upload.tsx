@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 
 declare global {
   interface Window {
@@ -25,29 +25,52 @@ export default function CloudinaryUpload({
   className = "",
   label = "Upload Image",
 }: CloudinaryUploadProps) {
+  const [widgetReady, setWidgetReady] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const widgetRef = useRef<any>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!document.getElementById("cloudinary-widget-script")) {
+    function loadWidget() {
+      if (window.cloudinary) {
+        setWidgetReady(true);
+        return;
+      }
+
+      const existingScript = document.getElementById("cloudinary-widget-script");
+      if (existingScript) {
+        existingScript.addEventListener("load", () => setWidgetReady(true));
+        return;
+      }
+
       const script = document.createElement("script");
       script.id = "cloudinary-widget-script";
       script.src = "https://widget.cloudinary.com/v2.0/all.js";
       script.async = true;
+      script.onload = () => setWidgetReady(true);
+      script.onerror = () => {
+        console.error("Failed to load Cloudinary widget script");
+      };
       document.body.appendChild(script);
     }
+
+    loadWidget();
   }, []);
 
   const openWidget = useCallback(() => {
     if (!window.cloudinary) {
-      alert("Upload widget is still loading, please try again in a moment.");
+      const script = document.getElementById("cloudinary-widget-script");
+      if (script) {
+        script.addEventListener("load", () => openWidget());
+      } else {
+        alert("Upload widget failed to load. Please refresh the page and try again.");
+      }
       return;
     }
 
-    if (widgetRef.current) {
-      widgetRef.current.close();
-    }
+    setUploading(true);
 
-    widgetRef.current = window.cloudinary.createUploadWidget(
+    const widget = window.cloudinary.createUploadWidget(
       {
         cloudName,
         uploadPreset,
@@ -75,23 +98,42 @@ export default function CloudinaryUpload({
         if (!error && result && result.event === "success") {
           onUpload(result.info.secure_url);
         }
+        if (result && result.event === "close") {
+          setUploading(false);
+        }
       }
     );
 
-    widgetRef.current.open();
-  }, [cloudName, uploadPreset, folder, onUpload]);
+    widget.open();
+    setUploading(false);
+  }, [cloudName, uploadPreset, folder, onUpload, widgetReady]);
 
   return (
-    <button
-      type="button"
-      onClick={openWidget}
-      className={`inline-flex items-center gap-2 rounded-lg border-2 border-dashed border-slate-300 px-4 py-3 text-sm font-medium text-slate-600 hover:border-emerald-400 hover:text-emerald-600 hover:bg-emerald-50 transition-colors ${className}`}
-    >
-      <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-        <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
-      </svg>
-      {label}
-    </button>
+    <div ref={containerRef}>
+      <button
+        type="button"
+        onClick={openWidget}
+        disabled={uploading}
+        className={`inline-flex items-center gap-2 rounded-lg border-2 border-dashed border-slate-300 px-4 py-3 text-sm font-medium text-slate-600 hover:border-emerald-400 hover:text-emerald-600 hover:bg-emerald-50 transition-colors disabled:opacity-50 ${className}`}
+      >
+        {uploading ? (
+          <>
+            <svg className="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+            </svg>
+            Uploading...
+          </>
+        ) : (
+          <>
+            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+            </svg>
+            {label}
+          </>
+        )}
+      </button>
+    </div>
   );
 }
 
