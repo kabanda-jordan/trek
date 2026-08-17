@@ -42,22 +42,38 @@ function Stars({ rating }: { rating: number }) {
 }
 
 const fallbackDestinations = [
-  { name: "Volcanoes National Park", slug: "volcanoes-national-park", location: "Northern Province", shortDesc: "Mountain gorillas & volcanic peaks" },
-  { name: "Akagera National Park", slug: "akagera-national-park", location: "Eastern Province", shortDesc: "Big Five savannah safari" },
-  { name: "Nyungwe National Park", slug: "nyungwe-national-park", location: "Western Province", shortDesc: "Ancient rainforest & canopy walk" },
-  { name: "Lake Kivu", slug: "lake-kivu", location: "Western Province", shortDesc: "Lakeside relaxation & adventure" },
-  { name: "Kigali", slug: "kigali", location: "Kigali", shortDesc: "Culture, history & innovation" },
-  { name: "Musanze", slug: "musanze", location: "Northern Province", shortDesc: "Caves, hikes & gorilla gateway" },
+  { name: "Volcanoes National Park", slug: "volcanoes-national-park", location: "Northern Province", shortDesc: "Mountain gorillas & volcanic peaks", coverImageUrl: "https://images.unsplash.com/photo-1521651201144-634f700b36ef?w=800&h=600&fit=crop" },
+  { name: "Akagera National Park", slug: "akagera-national-park", location: "Eastern Province", shortDesc: "Big Five savannah safari", coverImageUrl: "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=800&h=600&fit=crop" },
+  { name: "Nyungwe National Park", slug: "nyungwe-national-park", location: "Western Province", shortDesc: "Ancient rainforest & canopy walk", coverImageUrl: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&h=600&fit=crop" },
+  { name: "Lake Kivu", slug: "lake-kivu", location: "Western Province", shortDesc: "Lakeside relaxation & adventure", coverImageUrl: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop" },
+  { name: "Kigali", slug: "kigali", location: "Kigali", shortDesc: "Culture, history & innovation", coverImageUrl: "https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=800&h=600&fit=crop" },
+  { name: "Musanze", slug: "musanze", location: "Northern Province", shortDesc: "Caves, hikes & gorilla gateway", coverImageUrl: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&h=600&fit=crop" },
 ];
 
 const fallbackSafaris = [
-  { name: "Gorilla Trekking", slug: "gorilla-trekking", durationDays: 3, price: 1500, averageRating: 4.9, totalReviews: 342, tag: "Bestseller" },
-  { name: "Akagera Big Five Safari", slug: "akagera-safari", durationDays: 2, price: 450, averageRating: 4.7, totalReviews: 186, tag: null },
-  { name: "Nyungwe Canopy Walk", slug: "nyungwe-canopy-walk", durationDays: 1, price: 200, averageRating: 4.8, totalReviews: 224, tag: "Top Rated" },
-  { name: "Lake Kivu Adventure", slug: "lake-kivu-adventure", durationDays: 3, price: 350, averageRating: 4.6, totalReviews: 98, tag: null },
-  { name: "Rwanda Cultural Immersion", slug: "cultural-immersion", durationDays: 5, price: 800, averageRating: 4.8, totalReviews: 156, tag: "New" },
-  { name: "Golden Monkey Trek", slug: "golden-monkey-trek", durationDays: 1, price: 250, averageRating: 4.7, totalReviews: 134, tag: null },
+  { name: "Gorilla Trekking", slug: "gorilla-trekking", durationDays: 3, price: 1500, averageRating: 4.9, totalReviews: 342, tag: "Bestseller", coverImageUrl: "https://images.unsplash.com/photo-1521651201144-634f700b36ef?w=800&h=600&fit=crop" },
+  { name: "Akagera Big Five Safari", slug: "akagera-safari", durationDays: 2, price: 450, averageRating: 4.7, totalReviews: 186, tag: null, coverImageUrl: "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=800&h=600&fit=crop" },
+  { name: "Nyungwe Canopy Walk", slug: "nyungwe-canopy-walk", durationDays: 1, price: 200, averageRating: 4.8, totalReviews: 224, tag: "Top Rated", coverImageUrl: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&h=600&fit=crop" },
+  { name: "Lake Kivu Adventure", slug: "lake-kivu-adventure", durationDays: 3, price: 350, averageRating: 4.6, totalReviews: 98, tag: null, coverImageUrl: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop" },
+  { name: "Rwanda Cultural Immersion", slug: "cultural-immersion", durationDays: 5, price: 800, averageRating: 4.8, totalReviews: 156, tag: "New", coverImageUrl: "https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=800&h=600&fit=crop" },
+  { name: "Golden Monkey Trek", slug: "golden-monkey-trek", durationDays: 1, price: 250, averageRating: 4.7, totalReviews: 134, tag: null, coverImageUrl: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&h=600&fit=crop" },
 ];
+
+const defaultCoverImages: Record<string, string> = {
+  "volcanoes-national-park": "https://images.unsplash.com/photo-1521651201144-634f700b36ef?w=800&h=600&fit=crop",
+  "akagera-national-park": "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=800&h=600&fit=crop",
+  "nyungwe-national-park": "https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&h=600&fit=crop",
+  "lake-kivu": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
+  "kigali": "https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=800&h=600&fit=crop",
+  "musanze": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&h=600&fit=crop",
+  "gorilla-trekking": "https://images.unsplash.com/photo-1521651201144-634f700b36ef?w=800&h=600&fit=crop",
+  "akagera-safari": "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=800&h=600&fit=crop",
+  "nyungwe-canopy": "https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&h=600&fit=crop",
+  "lake-kivu-adventure": "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&h=600&fit=crop",
+  "cultural-immersion": "https://images.unsplash.com/photo-1523805009345-7448845a9e53?w=800&h=600&fit=crop",
+  "golden-monkey-trek": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&h=600&fit=crop",
+  "_default": "https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=800&h=600&fit=crop",
+};
 
 export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -133,20 +149,21 @@ export default function HomePage() {
           <Link href="/destinations" className="text-sm font-medium text-emerald-700 hover:text-emerald-800 hidden sm:block">View all</Link>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {destinations.map((d) => (
-            <Link key={d.slug} href={`/destinations/${d.slug}`}
-              className="group relative rounded-xl overflow-hidden bg-slate-100 aspect-[4/3] flex items-end">
-              {d.coverImageUrl ? (
-                <img src={cloudinaryCard(d.coverImageUrl)} alt={d.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-              ) : null}
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent group-hover:from-emerald-900/80 transition-all duration-300" />
-              <div className="relative p-5 w-full">
-                <p className="text-xs font-medium text-emerald-300 uppercase tracking-wide">{d.location || d.province || "Rwanda"}</p>
-                <h3 className="text-lg font-bold text-white mt-1">{d.name}</h3>
-                {d.shortDesc && <p className="text-sm text-gray-300 mt-0.5">{d.shortDesc}</p>}
-              </div>
-            </Link>
-          ))}
+          {destinations.map((d) => {
+            const img = d.coverImageUrl || defaultCoverImages[d.slug] || defaultCoverImages["_default"];
+            return (
+              <Link key={d.slug} href={`/destinations/${d.slug}`}
+                className="group relative rounded-xl overflow-hidden bg-slate-100 aspect-[4/3] flex items-end">
+                <img src={img} alt={d.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent group-hover:from-emerald-900/80 transition-all duration-300" />
+                <div className="relative p-5 w-full">
+                  <p className="text-xs font-medium text-emerald-300 uppercase tracking-wide">{d.location || d.province || "Rwanda"}</p>
+                  <h3 className="text-lg font-bold text-white mt-1">{d.name}</h3>
+                  {d.shortDesc && <p className="text-sm text-gray-300 mt-0.5">{d.shortDesc}</p>}
+                </div>
+              </Link>
+            );
+          })}
         </div>
         <div className="mt-6 text-center sm:hidden">
           <Link href="/destinations" className="text-sm font-medium text-emerald-700">View all destinations</Link>
@@ -164,35 +181,36 @@ export default function HomePage() {
             <Link href="/safaris" className="text-sm font-medium text-emerald-700 hover:text-emerald-800 hidden sm:block">View all</Link>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {safaris.map((s) => (
-              <Link key={s.slug} href={`/safaris/${s.slug}`}
-                className="group bg-white rounded-xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition-all duration-300">
-                <div className="relative aspect-[16/10] bg-gradient-to-br from-slate-100 to-slate-200">
-                  {s.coverImageUrl && (
-                    <img src={cloudinaryCard(s.coverImageUrl)} alt={s.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                  )}
-                </div>
-                <div className="p-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Stars rating={s.averageRating || 0} />
-                    <span className="text-xs text-slate-500">{s.averageRating || "N/A"} {s.totalReviews ? `(${s.totalReviews})` : ""}</span>
+            {safaris.map((s) => {
+              const img = s.coverImageUrl || defaultCoverImages[s.slug] || defaultCoverImages["_default"];
+              return (
+                <Link key={s.slug} href={`/safaris/${s.slug}`}
+                  className="group bg-white rounded-xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition-all duration-300">
+                  <div className="relative aspect-[16/10]">
+                    <img src={img} alt={s.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                   </div>
-                  <h3 className="font-semibold text-slate-900 group-hover:text-emerald-700 transition-colors">{s.name}</h3>
-                  <p className="mt-1 text-sm text-slate-500">{s.durationDays || 1} {(s.durationDays || 1) === 1 ? "day" : "days"}</p>
-                  <div className="mt-3 flex items-center justify-between">
-                    <div>
-                      {s.price != null && (
-                        <>
-                          <span className="text-xl font-bold text-slate-900">${s.price.toLocaleString()}</span>
-                          <span className="text-xs text-slate-500 ml-1">/ person</span>
-                        </>
-                      )}
+                  <div className="p-4">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Stars rating={s.averageRating || 0} />
+                      <span className="text-xs text-slate-500">{s.averageRating || "N/A"} {s.totalReviews ? `(${s.totalReviews})` : ""}</span>
                     </div>
-                    <span className="text-sm font-medium text-emerald-700 group-hover:underline">Details</span>
+                    <h3 className="font-semibold text-slate-900 group-hover:text-emerald-700 transition-colors">{s.name}</h3>
+                    <p className="mt-1 text-sm text-slate-500">{s.durationDays || 1} {(s.durationDays || 1) === 1 ? "day" : "days"}</p>
+                    <div className="mt-3 flex items-center justify-between">
+                      <div>
+                        {s.price != null && (
+                          <>
+                            <span className="text-xl font-bold text-slate-900">${s.price.toLocaleString()}</span>
+                            <span className="text-xs text-slate-500 ml-1">/ person</span>
+                          </>
+                        )}
+                      </div>
+                      <span className="text-sm font-medium text-emerald-700 group-hover:underline">Details</span>
+                    </div>
                   </div>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
