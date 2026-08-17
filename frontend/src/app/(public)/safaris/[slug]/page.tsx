@@ -1,6 +1,10 @@
 import { use } from "react";
 import Link from "next/link";
 
+export function generateStaticParams() {
+  return [{ slug: "gorilla-trekking" }, { slug: "nyungwe-canopy" }, { slug: "akagera-safari" }];
+}
+
 const mockSafari = {
   name: "Gorilla Trekking Experience",
   slug: "gorilla-trekking",

@@ -2,6 +2,10 @@ import { use } from "react";
 import Link from "next/link";
 import PageHeader from "@/components/ui/page-header";
 
+export function generateStaticParams() {
+  return [{ slug: "volcanoes-national-park" }, { slug: "nyungwe-forest" }, { slug: "akagera" }];
+}
+
 const mockDestination = {
   name: "Volcanoes National Park",
   slug: "volcanoes-national-park",

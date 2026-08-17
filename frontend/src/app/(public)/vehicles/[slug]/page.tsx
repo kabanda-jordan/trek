@@ -1,6 +1,10 @@
 import { use } from "react";
 import Link from "next/link";
 
+export function generateStaticParams() {
+  return [{ slug: "toyota-land-cruiser" }, { slug: "mercedes-sprinter" }];
+}
+
 export default function VehicleDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
   const name = slug.replace(/-/g, " ").replace(/\b\w/g, l => l.toUpperCase());

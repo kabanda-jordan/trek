@@ -85,7 +85,7 @@ export default function AdminBookingsPage() {
                       </span>
                     </td>
                     <td className="px-6 py-4">
-                      <a href={`/admin/bookings/${b.id}`} className="text-emerald-700 hover:text-emerald-800 font-medium text-xs">View</a>
+                      <a href={`/admin/bookings/view?id=${b.id}`} className="text-emerald-700 hover:text-emerald-800 font-medium text-xs">View</a>
                     </td>
                   </tr>
                 ))

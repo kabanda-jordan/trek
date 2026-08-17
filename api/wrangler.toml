@@ -4,16 +4,5 @@ compatibility_date = "2024-12-01"
 compatibility_flags = ["nodejs_compat"]
 
 [vars]
-JWT_SECRET = "mySecretKeyForJwtTokenGenerationThatIsLongEnoughForHS256Algorithm2026TrekRwanda"
-
-[[kv_namespaces]]
-binding = "SESSION_KV"
-id = "placeholder"
-
-[build]
-command = "npm install"
-
-[[migrations]]
-binding = "DB"
-database_name = "trek-rwanda-db"
-database_id = "placeholder"
+JWT_SECRET = "trek-rwanda-jwt-secret-production-2026"
+DATABASE_URL = "postgresql://neondb_owner:npg_nZs3mWM2IjgX@ep-nameless-violet-axtz0d5h-pooler.c-4.us-east-2.aws.neon.tech/neondb?sslmode=require"

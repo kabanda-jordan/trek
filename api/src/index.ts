@@ -49,8 +49,8 @@ app.route("/api/admin/users", admUser);
 app.notFound((c) => c.json({ success: false, error: "Not found" }, 404));
 
 app.onError((err, c) => {
-  console.error("Unhandled error:", err);
-  return c.json({ success: false, error: "Internal server error" }, 500);
+  console.error("Unhandled error:", err.message, err.stack);
+  return c.json({ success: false, error: err.message || "Internal server error" }, 500);
 });
 
 export default app;

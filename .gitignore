@@ -57,3 +57,7 @@ backend/.mvn/wrapper/maven-wrapper.jar
 
 # Docker
 docker-compose.override.yml
+
+api/node_modules/
+api/dist/
+api/.wrangler/

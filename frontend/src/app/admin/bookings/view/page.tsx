@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { api } from "@/lib/api";
 import type { Booking } from "@/types";
 import PageHeader from "@/components/ui/page-header";
@@ -11,7 +11,8 @@ import { formatPrice, getStatusColor, formatDateShort } from "@/lib/utils";
 const statusOptions = ["PENDING", "CONFIRMED", "COMPLETED", "CANCELLED"];
 
 export default function AdminBookingDetailPage() {
-  const { id } = useParams();
+  const searchParams = useSearchParams();
+  const id = searchParams.get("id");
   const router = useRouter();
   const [booking, setBooking] = useState<Booking | null>(null);
   const [loading, setLoading] = useState(true);
@@ -19,6 +20,10 @@ export default function AdminBookingDetailPage() {
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
+    if (!id) {
+      router.push("/admin/bookings");
+      return;
+    }
     api
       .get<Booking>(`/admin/bookings/${id}`)
       .then((b) => {
