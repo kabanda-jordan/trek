@@ -50,12 +50,14 @@ export const destinations = pgTable("destinations", {
   latitude: decimal("latitude", { precision: 10, scale: 8 }),
   longitude: decimal("longitude", { precision: 11, scale: 8 }),
   isPublished: boolean("is_published").notNull().default(false),
+  isFeatured: boolean("is_featured").notNull().default(false),
   sortOrder: integer("sort_order").default(0),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
 }, (t) => [
   index("idx_destinations_slug").on(t.slug),
   index("idx_destinations_published").on(t.isPublished),
+  index("idx_destinations_featured").on(t.isFeatured),
   index("idx_destinations_district").on(t.district),
 ]);
 

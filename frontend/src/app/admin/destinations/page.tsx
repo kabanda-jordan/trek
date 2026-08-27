@@ -29,6 +29,11 @@ export default function AdminDestinationsPage() {
     load(page);
   };
 
+  const toggleFeatured = async (id: string) => {
+    await api.put(`/admin/destinations/${id}/feature`);
+    load(page);
+  };
+
   const deleteDest = async (id: string) => {
     if (!confirm("Delete this destination?")) return;
     await api.delete(`/admin/destinations/${id}`);
@@ -55,14 +60,15 @@ export default function AdminDestinationsPage() {
                 <th className="px-6 py-3 font-medium">Location</th>
                 <th className="px-6 py-3 font-medium">Province</th>
                 <th className="px-6 py-3 font-medium">Status</th>
+                <th className="px-6 py-3 font-medium">Featured</th>
                 <th className="px-6 py-3 font-medium">Actions</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={5} className="px-6 py-12 text-center text-slate-400">Loading...</td></tr>
+                <tr><td colSpan={6} className="px-6 py-12 text-center text-slate-400">Loading...</td></tr>
               ) : data?.content.length === 0 ? (
-                <tr><td colSpan={5} className="px-6 py-12 text-center text-slate-400">No destinations found</td></tr>
+                <tr><td colSpan={6} className="px-6 py-12 text-center text-slate-400">No destinations found</td></tr>
               ) : (
                 data?.content.map((d) => (
                   <tr key={d.id} className="border-b border-slate-50 hover:bg-slate-50">
@@ -72,6 +78,13 @@ export default function AdminDestinationsPage() {
                     <td className="px-6 py-4">
                       <button onClick={() => togglePublish(d.id)} className={`inline-flex rounded-full px-2 py-0.5 text-xs font-medium cursor-pointer ${d.isPublished ? "bg-emerald-50 text-emerald-700" : "bg-slate-100 text-slate-600"}`}>
                         {d.isPublished ? "Published" : "Draft"}
+                      </button>
+                    </td>
+                    <td className="px-6 py-4">
+                      <button onClick={() => toggleFeatured(d.id)} title={d.isFeatured ? "Unpin from landing page" : "Pin to landing page"}
+                        className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium cursor-pointer ${d.isFeatured ? "bg-amber-50 text-amber-600" : "bg-slate-100 text-slate-500 hover:bg-amber-50 hover:text-amber-600"}`}>
+                        <svg className="h-3.5 w-3.5" fill={d.isFeatured ? "currentColor" : "none"} viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.562.562 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" /></svg>
+                        {d.isFeatured ? "Pinned" : "Pin"}
                       </button>
                     </td>
                     <td className="px-6 py-4 space-x-3">

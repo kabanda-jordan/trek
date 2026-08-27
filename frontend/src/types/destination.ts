@@ -28,6 +28,7 @@ export interface Destination {
   latitude?: number;
   longitude?: number;
   isPublished: boolean;
+  isFeatured?: boolean;
   sortOrder: number;
   activities: Activity[];
   images: DestinationImage[];

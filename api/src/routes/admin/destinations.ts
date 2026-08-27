@@ -47,6 +47,7 @@ admDest.post("/", async (c) => {
     openingHours: body.openingHours || null,
     thingsToKnow: body.thingsToKnow || null,
     isPublished: body.isPublished || false,
+    isFeatured: body.isFeatured || false,
   }).returning();
 
   return ok(item, "Destination created");
@@ -71,6 +72,7 @@ admDest.put("/:id", async (c) => {
     openingHours: body.openingHours ?? existing.openingHours,
     thingsToKnow: body.thingsToKnow ?? existing.thingsToKnow,
     isPublished: body.isPublished ?? existing.isPublished,
+    isFeatured: body.isFeatured ?? existing.isFeatured,
     updatedAt: new Date(),
   }).where(eq(destinations.id, id)).returning();
 
@@ -91,6 +93,20 @@ admDest.put("/:id/publish", async (c) => {
 
   const [item] = await db.update(destinations).set({
     isPublished: !existing.isPublished,
+    updatedAt: new Date(),
+  }).where(eq(destinations.id, id)).returning();
+
+  return ok(item);
+});
+
+admDest.put("/:id/feature", async (c) => {
+  const db = getDb(c.env.DATABASE_URL);
+  const id = c.req.param("id");
+  const [existing] = await db.select().from(destinations).where(eq(destinations.id, id)).limit(1);
+  if (!existing) return err("Not found", 404);
+
+  const [item] = await db.update(destinations).set({
+    isFeatured: !existing.isFeatured,
     updatedAt: new Date(),
   }).where(eq(destinations.id, id)).returning();
 

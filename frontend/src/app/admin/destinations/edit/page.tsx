@@ -23,6 +23,7 @@ function EditDestinationForm() {
     openingHours: "",
     thingsToKnow: "",
     coverImageUrl: "",
+    isFeatured: false,
   });
 
   useEffect(() => {
@@ -40,13 +41,14 @@ function EditDestinationForm() {
           openingHours: d.openingHours || "",
           thingsToKnow: d.thingsToKnow || "",
           coverImageUrl: d.coverImageUrl || "",
+          isFeatured: d.isFeatured || false,
         })
       )
       .catch(() => alert("Failed to load destination"))
       .finally(() => setLoading(false));
   }, [id]);
 
-  const set = (field: string, value: string) => setForm((f) => ({ ...f, [field]: value }));
+  const set = (field: string, value: string | boolean) => setForm((f) => ({ ...f, [field]: value }));
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -116,6 +118,16 @@ function EditDestinationForm() {
                   />
                 )}
               </div>
+            </div>
+            <div className="flex items-center justify-between rounded-lg border border-slate-200 p-4">
+              <div>
+                <p className="text-sm font-medium text-slate-800">Pin to landing page</p>
+                <p className="text-xs text-slate-500 mt-0.5">Featured destinations appear on the homepage</p>
+              </div>
+              <button type="button" onClick={() => set("isFeatured", !form.isFeatured)}
+                className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors cursor-pointer ${form.isFeatured ? "bg-amber-500" : "bg-slate-300"}`}>
+                <span className={`inline-block h-5 w-5 transform rounded-full bg-white shadow transition-transform ${form.isFeatured ? "translate-x-5" : "translate-x-0.5"}`} />
+              </button>
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1">Things to Know</label>

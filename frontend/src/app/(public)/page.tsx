@@ -15,6 +15,7 @@ interface DestSummary {
   location?: string;
   province?: string;
   coverImageUrl?: string;
+  isFeatured?: boolean;
 }
 
 interface SafariSummary {
@@ -84,10 +85,11 @@ export default function HomePage() {
   const router = useRouter();
 
   useEffect(() => {
-    api.get<{ content: DestSummary[] }>("/destinations", { page: "0", size: "6" })
+    api.get<{ content: DestSummary[] }>("/destinations", { page: "0", size: "50" })
       .then((res) => {
         const items = res.content || [];
-        setDestinations(items.length > 0 ? items : fallbackDestinations as any);
+        const featured = items.filter((d) => d.isFeatured);
+        setDestinations(featured.length > 0 ? featured : (items.length > 0 ? items : fallbackDestinations as any));
       })
       .catch(() => setDestinations(fallbackDestinations as any));
 
