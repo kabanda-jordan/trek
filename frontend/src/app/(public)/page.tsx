@@ -42,15 +42,6 @@ function Stars({ rating }: { rating: number }) {
   );
 }
 
-const fallbackDestinations = [
-  { name: "Volcanoes National Park", slug: "volcanoes-national-park", location: "Northern Province", shortDesc: "Mountain gorillas & volcanic peaks", coverImageUrl: "https://images.unsplash.com/photo-1722291731448-3afe029611a6?w=800&h=600&fit=crop" },
-  { name: "Akagera National Park", slug: "akagera-national-park", location: "Eastern Province", shortDesc: "Big Five savannah safari", coverImageUrl: "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=800&h=600&fit=crop" },
-  { name: "Nyungwe National Park", slug: "nyungwe-national-park", location: "Western Province", shortDesc: "Ancient rainforest & canopy walk", coverImageUrl: "https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&h=600&fit=crop" },
-  { name: "Lake Kivu", slug: "lake-kivu", location: "Western Province", shortDesc: "Lakeside relaxation & adventure", coverImageUrl: "https://images.unsplash.com/photo-1439066615861-d1af74d74000?w=800&h=600&fit=crop" },
-  { name: "Kigali", slug: "kigali", location: "Kigali", shortDesc: "Culture, history & innovation", coverImageUrl: "https://images.unsplash.com/photo-1477959858617-67f85cf4f1df?w=800&h=600&fit=crop" },
-  { name: "Musanze", slug: "musanze", location: "Northern Province", shortDesc: "Caves, hikes & gorilla gateway", coverImageUrl: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&h=600&fit=crop" },
-];
-
 const fallbackSafaris = [
   { name: "Gorilla Trekking", slug: "gorilla-trekking", durationDays: 3, price: 1500, averageRating: 4.9, totalReviews: 342, tag: "Bestseller", coverImageUrl: "https://images.unsplash.com/photo-1605559911928-e03606ea0dc0?w=800&h=600&fit=crop" },
   { name: "Akagera Big Five Safari", slug: "akagera-safari", durationDays: 2, price: 450, averageRating: 4.7, totalReviews: 186, tag: null, coverImageUrl: "https://images.unsplash.com/photo-1546422737-ac2ae13984ba?w=800&h=600&fit=crop" },
@@ -88,10 +79,9 @@ export default function HomePage() {
     api.get<{ content: DestSummary[] }>("/destinations", { page: "0", size: "50" })
       .then((res) => {
         const items = res.content || [];
-        const featured = items.filter((d) => d.isFeatured);
-        setDestinations(featured.length > 0 ? featured : (items.length > 0 ? items : fallbackDestinations as any));
+        setDestinations(items.filter((d) => d.isFeatured));
       })
-      .catch(() => setDestinations(fallbackDestinations as any));
+      .catch(() => setDestinations([]));
 
     api.get<{ content: SafariSummary[] }>("/safaris", { page: "0", size: "6" })
       .then((res) => {
@@ -153,7 +143,11 @@ export default function HomePage() {
           <Link href="/destinations" className="text-sm font-medium text-emerald-700 hover:text-emerald-800 hidden sm:block">View all</Link>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {destinations.map((d) => {
+          {(destinations.length === 0) ? (
+            <div className="col-span-full rounded-xl border border-dashed border-slate-300 bg-white p-10 text-center text-slate-500">
+              No destinations are currently pinned. Sign in as an admin and pin destinations from the dashboard to show them here.
+            </div>
+          ) : destinations.map((d) => {
             const img = d.coverImageUrl || defaultCoverImages[d.slug] || defaultCoverImages["_default"];
             return (
               <Link key={d.slug} href={`/destinations/${d.slug}`}
