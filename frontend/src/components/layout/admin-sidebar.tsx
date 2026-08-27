@@ -56,12 +56,23 @@ export default function AdminSidebar({ open, onClose }: { open: boolean; onClose
           })}
         </nav>
 
-        <div className="border-t border-gray-800 p-4">
-          <div className="text-sm text-gray-400 mb-2">{user?.name}</div>
+        <div className="border-t border-gray-800 p-4 space-y-3">
+          <div className="flex items-center gap-3">
+            <div className="h-9 w-9 rounded-full bg-emerald-500 flex items-center justify-center text-sm font-bold text-white shrink-0">
+              {(user?.name || "A").charAt(0).toUpperCase()}
+            </div>
+            <div className="min-w-0">
+              <div className="text-sm font-medium text-white truncate">{user?.name}</div>
+              <div className="text-xs text-gray-500 truncate">{user?.email}</div>
+            </div>
+          </div>
           <button
             onClick={logout}
-            className="w-full text-left text-sm text-gray-500 hover:text-red-400 transition-colors"
+            className="w-full flex items-center justify-center gap-2 rounded-lg border border-gray-700 bg-gray-800 px-4 py-2.5 text-sm font-medium text-gray-200 hover:bg-red-600 hover:border-red-600 hover:text-white transition-all"
           >
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
             Logout
           </button>
         </div>
