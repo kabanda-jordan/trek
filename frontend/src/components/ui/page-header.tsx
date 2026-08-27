@@ -8,12 +8,16 @@ interface PageHeaderProps {
 
 export default function PageHeader({ title, description, actions }: PageHeaderProps) {
   return (
-    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6 md:mb-8">
+    <div className="mb-8 md:mb-10 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
       <div>
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">{title}</h1>
-        {description && <p className="mt-1.5 sm:mt-2 text-gray-600 text-sm sm:text-base">{description}</p>}
+        <span className="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.15em] text-emerald-600 mb-2">
+          <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+          TrekRwanda
+        </span>
+        <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">{title}</h1>
+        {description && <p className="mt-2 text-gray-600 text-sm sm:text-base max-w-2xl">{description}</p>}
       </div>
-      {actions && <div className="flex items-center gap-3">{actions}</div>}
+      {actions && <div className="flex items-center gap-3 shrink-0">{actions}</div>}
     </div>
   );
 }

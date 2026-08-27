@@ -7,17 +7,16 @@ import { useAuth } from "@/hooks/use-auth";
 const destinationLinks = [
   { href: "/destinations/volcanoes-national-park", label: "Volcanoes National Park" },
   { href: "/destinations/akagera-national-park", label: "Akagera National Park" },
-  { href: "/destinations/nyungwe-national-park", label: "Nyungwe National Park" },
+  { href: "/destinations/nyungwe-forest-national-park", label: "Nyungwe Forest National Park" },
   { href: "/destinations/lake-kivu", label: "Lake Kivu" },
-  { href: "/destinations/kigali", label: "Kigali" },
+  { href: "/destinations/kigali-city", label: "Kigali City" },
   { href: "/destinations", label: "View All Destinations" },
 ];
 
 const safariLinks = [
   { href: "/safaris/gorilla-trekking", label: "Gorilla Trekking" },
-  { href: "/safaris/akagera-safari", label: "Akagera Big Five" },
-  { href: "/safaris/nyungwe-canopy-walk", label: "Nyungwe Canopy Walk" },
-  { href: "/safaris/lake-kivu-adventure", label: "Lake Kivu Adventure" },
+  { href: "/safaris/akagera-safari", label: "Akagera Safari" },
+  { href: "/safaris/nyungwe-canopy", label: "Nyungwe Canopy Walk" },
   { href: "/safaris", label: "View All Safaris" },
 ];
 
