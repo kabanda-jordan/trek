@@ -4,6 +4,7 @@ import { use, useEffect, useState } from "react";
 import Link from "next/link";
 import { api } from "@/lib/api";
 import { cloudinaryCard } from "@/lib/cloudinary";
+import MapEmbed from "@/components/ui/map";
 
 interface DestinationDetail {
   id: string;
@@ -97,6 +98,11 @@ export default function DestinationDetailClient({ params }: { params: Promise<{ 
             </div>
           )}
 
+          <div className="mt-8">
+            <h2 className="text-lg font-semibold text-gray-900 mb-3">Map & Directions</h2>
+            <MapEmbed destinationName={dest.name} location={dest.location} height="h-72" />
+          </div>
+
           {dest.activities && dest.activities.length > 0 && (
             <div className="mt-8">
               <h2 className="text-lg font-semibold text-gray-900 mb-3">Activities</h2>
@@ -149,6 +155,9 @@ export default function DestinationDetailClient({ params }: { params: Promise<{ 
                   <div><p className="font-medium text-gray-900">District</p><p className="text-gray-500">{dest.district}</p></div>
                 </div>
               )}
+            </div>
+            <div className="mt-5">
+              <MapEmbed destinationName={dest.name} location={dest.location} height="h-40" showDirections={false} />
             </div>
             <Link href="/booking" className="mt-6 block w-full rounded-xl bg-emerald-700 py-3 text-center text-sm font-bold text-white hover:bg-emerald-800 transition-colors">
               Book a Safari
