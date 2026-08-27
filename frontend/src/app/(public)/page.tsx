@@ -30,18 +30,6 @@ interface SafariSummary {
   coverImageUrl?: string;
 }
 
-function Stars({ rating }: { rating: number }) {
-  return (
-    <div className="flex items-center gap-0.5">
-      {[1,2,3,4,5].map(i => (
-        <svg key={i} className={`h-3.5 w-3.5 ${i <= Math.round(rating) ? "text-amber-400" : "text-slate-300"}`} fill="currentColor" viewBox="0 0 20 20">
-          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.538 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-        </svg>
-      ))}
-    </div>
-  );
-}
-
 const fallbackSafaris = [
   { name: "Gorilla Trekking", slug: "gorilla-trekking", durationDays: 3, price: 1500, averageRating: 4.9, totalReviews: 342, tag: "Bestseller", coverImageUrl: "https://images.unsplash.com/photo-1605559911928-e03606ea0dc0?w=800&h=600&fit=crop" },
   { name: "Akagera Big Five Safari", slug: "akagera-safari", durationDays: 2, price: 450, averageRating: 4.7, totalReviews: 186, tag: null, coverImageUrl: "https://images.unsplash.com/photo-1546422737-ac2ae13984ba?w=800&h=600&fit=crop" },
@@ -151,13 +139,18 @@ export default function HomePage() {
             const img = d.coverImageUrl || defaultCoverImages[d.slug] || defaultCoverImages["_default"];
             return (
               <Link key={d.slug} href={`/destinations/${d.slug}`}
-                className="group relative rounded-xl overflow-hidden bg-slate-100 aspect-[4/3] flex items-end">
-                <img src={img} alt={d.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent group-hover:from-emerald-900/80 transition-all duration-300" />
-                <div className="relative p-5 w-full">
-                  <p className="text-xs font-medium text-emerald-300 uppercase tracking-wide">{d.location || d.province || "Rwanda"}</p>
-                  <h3 className="text-lg font-bold text-white mt-1">{d.name}</h3>
-                  {d.shortDesc && <p className="text-sm text-gray-300 mt-0.5">{d.shortDesc}</p>}
+                className="group bg-white rounded-xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-lg transition-all duration-300">
+                <div className="relative aspect-[16/10] overflow-hidden bg-slate-100">
+                  <img src={img} alt={d.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <span className="absolute top-3 right-3 bg-white/90 text-slate-700 text-xs font-medium px-2.5 py-1 rounded-full shadow-sm">{d.location || d.province || "Rwanda"}</span>
+                </div>
+                <div className="p-4">
+                  <h3 className="font-semibold text-slate-900 group-hover:text-emerald-700 transition-colors">{d.name}</h3>
+                  {d.shortDesc && <p className="mt-1 text-sm text-slate-500 line-clamp-2">{d.shortDesc}</p>}
+                  <div className="mt-3 flex items-center justify-between pt-3 border-t border-slate-100">
+                    <span className="text-xs text-emerald-700 font-medium">View details</span>
+                    <svg className="h-4 w-4 text-slate-400 group-hover:text-emerald-700 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" /></svg>
+                  </div>
                 </div>
               </Link>
             );
@@ -183,27 +176,33 @@ export default function HomePage() {
               const img = s.coverImageUrl || defaultCoverImages[s.slug] || defaultCoverImages["_default"];
               return (
                 <Link key={s.slug} href={`/safaris/${s.slug}`}
-                  className="group bg-white rounded-xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition-all duration-300">
-                  <div className="relative aspect-[16/10]">
+                  className="group bg-white rounded-xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-lg transition-all duration-300">
+                  <div className="relative aspect-[16/9] overflow-hidden">
                     <img src={img} alt={s.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    <span className="absolute top-3 left-3 inline-flex items-center gap-1 rounded-md bg-emerald-600 px-2 py-1 text-xs font-semibold text-white shadow">
+                      <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.538 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                      {s.averageRating || "N/A"}
+                    </span>
                   </div>
                   <div className="p-4">
-                    <div className="flex items-center gap-2 mb-2">
-                      <Stars rating={s.averageRating || 0} />
-                      <span className="text-xs text-slate-500">{s.averageRating || "N/A"} {s.totalReviews ? `(${s.totalReviews})` : ""}</span>
-                    </div>
                     <h3 className="font-semibold text-slate-900 group-hover:text-emerald-700 transition-colors">{s.name}</h3>
-                    <p className="mt-1 text-sm text-slate-500">{s.durationDays || 1} {(s.durationDays || 1) === 1 ? "day" : "days"}</p>
-                    <div className="mt-3 flex items-center justify-between">
-                      <div>
+                    <div className="mt-2 flex items-center gap-3 text-xs text-slate-500">
+                      <span className="flex items-center gap-1">
+                        <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                        {s.durationDays || 1} {(s.durationDays || 1) === 1 ? "day" : "days"}
+                      </span>
+                      {s.totalReviews ? <span>{s.totalReviews} reviews</span> : null}
+                    </div>
+                    <div className="mt-3 flex items-end justify-between pt-3 border-t border-slate-100">
+                      <div className="text-right order-1">
                         {s.price != null && (
                           <>
+                            <div className="text-[11px] text-slate-400">from</div>
                             <span className="text-xl font-bold text-slate-900">${s.price.toLocaleString()}</span>
-                            <span className="text-xs text-slate-500 ml-1">/ person</span>
                           </>
                         )}
                       </div>
-                      <span className="text-sm font-medium text-emerald-700 group-hover:underline">Details</span>
+                      <span className="order-0 text-sm font-medium text-emerald-700 group-hover:underline">Details</span>
                     </div>
                   </div>
                 </Link>
