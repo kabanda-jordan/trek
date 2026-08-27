@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Reveal from "@/components/ui/reveal";
 
 const safaris = [
   { name: "Gorilla Trekking Experience", slug: "gorilla-trekking", days: 3, price: 1500, rating: 4.9, reviews: 342, desc: "3-day immersive gorilla trekking in Volcanoes National Park.", difficulty: "Moderate", tag: "Bestseller" },
@@ -28,35 +29,37 @@ export default function SafarisPage() {
       <p className="mt-2 text-sm text-slate-500">Discover Rwanda&apos;s most distinguished safaris and adventures</p>
 
       <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {safaris.map((s) => (
-          <Link key={s.slug} href={`/safaris/${s.slug}`}
-            className="group bg-white rounded-xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition-all duration-300">
-            <div className="relative aspect-[16/10] bg-gradient-to-br from-slate-100 to-slate-200">
-              {s.tag && (
-                <span className="absolute top-3 left-3 bg-slate-900 text-white text-xs font-medium px-2.5 py-1 rounded">{s.tag}</span>
-              )}
-              <span className="absolute top-3 right-3 bg-white/90 text-slate-600 text-xs font-medium px-2.5 py-1 rounded shadow-sm border border-slate-100">
-                {s.difficulty}
-              </span>
-            </div>
-            <div className="p-4">
-              <div className="flex items-center gap-2 mb-2">
-                <Stars rating={s.rating} />
-                <span className="text-xs text-slate-500">{s.rating} ({s.reviews} reviews)</span>
+        {safaris.map((s, idx) => (
+          <Reveal key={s.slug} delay={idx * 70}>
+            <Link href={`/safaris/${s.slug}`}
+              className="group bg-white rounded-xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-md transition-all duration-300 block">
+              <div className="relative aspect-[16/10] bg-gradient-to-br from-slate-100 to-slate-200">
+                {s.tag && (
+                  <span className="absolute top-3 left-3 bg-slate-900 text-white text-xs font-medium px-2.5 py-1 rounded">{s.tag}</span>
+                )}
+                <span className="absolute top-3 right-3 bg-white/90 text-slate-600 text-xs font-medium px-2.5 py-1 rounded shadow-sm border border-slate-100">
+                  {s.difficulty}
+                </span>
               </div>
-              <h3 className="font-semibold text-slate-900 group-hover:text-emerald-700 transition-colors">{s.name}</h3>
-              <p className="mt-1 text-sm text-slate-500 line-clamp-2">{s.desc}</p>
-              <div className="mt-3 flex items-center justify-between">
-                <div className="flex items-center gap-3 text-sm text-slate-500">
-                  <span>{s.days} {s.days === 1 ? "day" : "days"}</span>
+              <div className="p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <Stars rating={s.rating} />
+                  <span className="text-xs text-slate-500">{s.rating} ({s.reviews} reviews)</span>
                 </div>
-                <div className="text-right">
-                  <span className="text-lg font-bold text-slate-900">${s.price.toLocaleString()}</span>
-                  <span className="text-xs text-slate-500 ml-1">/ person</span>
+                <h3 className="font-semibold text-slate-900 group-hover:text-emerald-700 transition-colors">{s.name}</h3>
+                <p className="mt-1 text-sm text-slate-500 line-clamp-2">{s.desc}</p>
+                <div className="mt-3 flex items-center justify-between">
+                  <div className="flex items-center gap-3 text-sm text-slate-500">
+                    <span>{s.days} {s.days === 1 ? "day" : "days"}</span>
+                  </div>
+                  <div className="text-right">
+                    <span className="text-lg font-bold text-slate-900">${s.price.toLocaleString()}</span>
+                    <span className="text-xs text-slate-500 ml-1">/ person</span>
+                  </div>
                 </div>
               </div>
-            </div>
-          </Link>
+            </Link>
+          </Reveal>
         ))}
       </div>
     </div>

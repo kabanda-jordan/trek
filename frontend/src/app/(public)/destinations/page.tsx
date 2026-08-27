@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import PageHeader from "@/components/ui/page-header";
+import Reveal from "@/components/ui/reveal";
 import { api } from "@/lib/api";
 import { cloudinaryCard } from "@/lib/cloudinary";
 
@@ -63,21 +64,23 @@ export default function DestinationsPage() {
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
       <PageHeader title="Destinations" description="Explore Rwanda's national parks, lakes, and cultural landmarks" />
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-        {destinations.map((d) => {
+        {destinations.map((d, idx) => {
           const img = d.coverImageUrl || fallbackImages[d.slug] || fallbackImages["_default"];
           return (
-            <Link key={d.slug} href={`/destinations/${d.slug}`}
-              className="group block rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm hover:shadow-md transition-all duration-300">
-              <div className="relative aspect-[4/3] bg-slate-100">
-                <img src={img} alt={d.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                <span className="absolute top-3 left-3 text-xs bg-white/90 text-slate-600 px-2.5 py-1 rounded font-medium shadow-sm border border-slate-100">{d.province || d.location}</span>
-              </div>
-              <div className="p-4">
-                <h3 className="font-semibold text-slate-900 group-hover:text-emerald-700 transition-colors">{d.name}</h3>
-                <p className="mt-0.5 text-xs text-slate-400">{d.location}</p>
-                {d.shortDesc && <p className="mt-2 text-sm text-slate-600 line-clamp-2">{d.shortDesc}</p>}
-              </div>
-            </Link>
+            <Reveal key={d.slug} delay={idx * 70}>
+              <Link href={`/destinations/${d.slug}`}
+                className="group block rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm hover:shadow-md transition-all duration-300">
+                <div className="relative aspect-[4/3] bg-slate-100">
+                  <img src={img} alt={d.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  <span className="absolute top-3 left-3 text-xs bg-white/90 text-slate-600 px-2.5 py-1 rounded font-medium shadow-sm border border-slate-100">{d.province || d.location}</span>
+                </div>
+                <div className="p-4">
+                  <h3 className="font-semibold text-slate-900 group-hover:text-emerald-700 transition-colors">{d.name}</h3>
+                  <p className="mt-0.5 text-xs text-slate-400">{d.location}</p>
+                  {d.shortDesc && <p className="mt-2 text-sm text-slate-600 line-clamp-2">{d.shortDesc}</p>}
+                </div>
+              </Link>
+            </Reveal>
           );
         })}
       </div>
