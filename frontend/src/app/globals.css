@@ -17,3 +17,18 @@ body {
   color: var(--foreground);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
 }
+
+button:not(:disabled),
+[role="button"]:not(:disabled),
+a,
+input[type="checkbox"],
+input[type="radio"],
+label,
+select,
+summary {
+  cursor: pointer;
+}
+
+a:has(> button):not(:has(button > button)) {
+  cursor: pointer;
+}
