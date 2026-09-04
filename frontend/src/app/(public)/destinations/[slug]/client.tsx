@@ -22,6 +22,23 @@ interface DestinationDetail {
   activities: { id: string; name: string }[];
 }
 
+const wikiSlugs: Record<string, string> = {
+  "volcanoes-national-park": "Volcanoes_National_Park",
+  "akagera-national-park": "Akagera_National_Park",
+  "nyungwe-forest-national-park": "Nyungwe_Forest",
+  "lake-kivu": "Lake_Kivu",
+  "kigali-city": "Kigali",
+  "musanze-caves": "Musanze",
+  "inema-arts-center": "Kigali",
+  "royal-palace-huye": "Nyanza_District",
+};
+
+function wikipediaUrl(slug: string, name: string): string {
+  const known = wikiSlugs[slug];
+  const page = known || name.replace(/\s+/g, "_");
+  return `https://en.wikipedia.org/wiki/${page}`;
+}
+
 const fallbackImages: Record<string, string> = {
   "volcanoes-national-park": "https://images.unsplash.com/photo-1722291731448-3afe029611a6?w=1200&h=600&fit=crop",
   "akagera-national-park": "https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?w=1200&h=600&fit=crop",
@@ -95,6 +112,15 @@ export default function DestinationDetailClient({ params }: { params: Promise<{ 
             <div className="mt-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-3">About</h2>
               <p className="text-gray-600 leading-relaxed">{dest.description}</p>
+              <a
+                href={wikipediaUrl(slug, dest.name)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-emerald-700 hover:text-emerald-800 transition-colors"
+              >
+                Read more on Wikipedia
+                <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+              </a>
             </div>
           )}
 
@@ -158,6 +184,31 @@ export default function DestinationDetailClient({ params }: { params: Promise<{ 
             </div>
             <div className="mt-5">
               <MapEmbed destinationName={dest.name} location={dest.location} height="h-40" showDirections={false} />
+            </div>
+            <div className="mt-5">
+              <h4 className="text-xs font-semibold text-gray-900 uppercase tracking-wider mb-3">Learn More</h4>
+              <div className="space-y-2">
+                <a
+                  href={wikipediaUrl(slug, dest.name)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-emerald-50 hover:border-emerald-200 hover:text-emerald-700 transition-colors"
+                >
+                  <svg className="h-4 w-4 text-emerald-600 shrink-0" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15h-2v-6h2v6zm0-8h-2V7h2v2zm5 8h-2v-3h-2v-2h2v-3h2v3h2v2h-2v3z" transform="scale(0.85) translate(2 2)" /></svg>
+                  Wikipedia
+                  <svg className="h-3.5 w-3.5 ml-auto text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                </a>
+                <a
+                  href={`https://www.google.com/search?q=${encodeURIComponent(dest.name + " Rwanda")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2.5 text-sm font-medium text-slate-700 hover:bg-emerald-50 hover:border-emerald-200 hover:text-emerald-700 transition-colors"
+                >
+                  <svg className="h-4 w-4 text-emerald-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+                  Search the web
+                  <svg className="h-3.5 w-3.5 ml-auto text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                </a>
+              </div>
             </div>
             <Link href="/booking" className="mt-6 block w-full rounded-xl bg-emerald-700 py-3 text-center text-sm font-bold text-white hover:bg-emerald-800 transition-colors">
               Book a Safari
