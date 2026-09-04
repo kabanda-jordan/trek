@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { ok, err, paginate } from "../lib/response";
+import { ok, err, paginate, safeInt } from "../lib/response";
 import { getDb } from "../db";
 import { vehicleCompanies } from "../db/schema";
 import { eq, sql } from "drizzle-orm";
@@ -8,8 +8,8 @@ import type { Env, Variables } from "../types";
 const comp = new Hono<{ Bindings: Env; Variables: Variables }>();
 
 comp.get("/", async (c) => {
-  const page = parseInt(c.req.query("page") || "0");
-  const size = parseInt(c.req.query("size") || "20");
+  const page = safeInt(c.req.query("page"), 0);
+  const size = safeInt(c.req.query("size"), 20, 1, 50);
   const db = getDb(c.env.DATABASE_URL);
   const where = eq(vehicleCompanies.isActive, true);
 

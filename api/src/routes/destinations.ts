@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { ok, err, paginate } from "../lib/response";
+import { ok, err, paginate, safeInt } from "../lib/response";
 import { getDb } from "../db";
 import { destinations, destinationImages, destinationActivities, activities } from "../db/schema";
 import { eq, ilike, and, sql, desc } from "drizzle-orm";
@@ -8,8 +8,8 @@ import type { Env, Variables } from "../types";
 const dest = new Hono<{ Bindings: Env; Variables: Variables }>();
 
 dest.get("/", async (c) => {
-  const page = parseInt(c.req.query("page") || "0");
-  const size = parseInt(c.req.query("size") || "12");
+  const page = safeInt(c.req.query("page"), 0);
+  const size = safeInt(c.req.query("size"), 12, 1, 50);
   const district = c.req.query("district");
 
   const db = getDb(c.env.DATABASE_URL);
@@ -34,8 +34,8 @@ dest.get("/", async (c) => {
 
 dest.get("/search", async (c) => {
   const q = c.req.query("q");
-  const page = parseInt(c.req.query("page") || "0");
-  const size = parseInt(c.req.query("size") || "12");
+  const page = safeInt(c.req.query("page"), 0);
+  const size = safeInt(c.req.query("size"), 12, 1, 50);
 
   if (!q) return err("Search query 'q' is required");
 
@@ -59,7 +59,9 @@ dest.get("/search", async (c) => {
 dest.get("/:slug", async (c) => {
   const slug = c.req.param("slug");
   const db = getDb(c.env.DATABASE_URL);
-  const [item] = await db.select().from(destinations).where(eq(destinations.slug, slug)).limit(1);
+  const [item] = await db.select().from(destinations)
+    .where(and(eq(destinations.slug, slug), eq(destinations.isPublished, true)))
+    .limit(1);
   if (!item) return err("Destination not found", 404);
 
   const images = await db.select().from(destinationImages)

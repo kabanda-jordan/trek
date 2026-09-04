@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { ok, err, paginate } from "../../lib/response";
+import { ok, err, paginate, safeInt } from "../../lib/response";
 import { getDb } from "../../db";
 import { reviews } from "../../db/schema";
 import { eq, sql, and } from "drizzle-orm";
@@ -10,8 +10,8 @@ const admReview = new Hono<{ Bindings: Env; Variables: Variables }>();
 admReview.use("*", authMiddleware, adminMiddleware);
 
 admReview.get("/", async (c) => {
-  const page = parseInt(c.req.query("page") || "0");
-  const size = parseInt(c.req.query("size") || "20");
+  const page = safeInt(c.req.query("page"), 0);
+  const size = safeInt(c.req.query("size"), 20, 1, 50);
   const approved = c.req.query("approved");
   const db = getDb(c.env.DATABASE_URL);
 

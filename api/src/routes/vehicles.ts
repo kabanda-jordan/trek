@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { ok, err, paginate } from "../lib/response";
+import { ok, err, paginate, safeInt } from "../lib/response";
 import { getDb } from "../db";
 import { vehicles, vehicleImages } from "../db/schema";
 import { eq, and, sql } from "drizzle-orm";
@@ -8,8 +8,8 @@ import type { Env, Variables } from "../types";
 const veh = new Hono<{ Bindings: Env; Variables: Variables }>();
 
 veh.get("/", async (c) => {
-  const page = parseInt(c.req.query("page") || "0");
-  const size = parseInt(c.req.query("size") || "12");
+  const page = safeInt(c.req.query("page"), 0);
+  const size = safeInt(c.req.query("size"), 12, 1, 50);
   const type = c.req.query("type");
 
   const db = getDb(c.env.DATABASE_URL);
@@ -33,7 +33,9 @@ veh.get("/", async (c) => {
 veh.get("/:slug", async (c) => {
   const slug = c.req.param("slug");
   const db = getDb(c.env.DATABASE_URL);
-  const [item] = await db.select().from(vehicles).where(eq(vehicles.slug, slug)).limit(1);
+  const [item] = await db.select().from(vehicles)
+    .where(and(eq(vehicles.slug, slug), eq(vehicles.isPublished, true), eq(vehicles.isAvailable, true)))
+    .limit(1);
   if (!item) return err("Vehicle not found", 404);
 
   const images = await db.select().from(vehicleImages)

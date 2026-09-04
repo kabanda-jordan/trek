@@ -1,15 +1,15 @@
 import { Hono } from "hono";
-import { ok, err, paginate } from "../lib/response";
+import { ok, err, paginate, safeInt } from "../lib/response";
 import { getDb } from "../db";
 import { safaris, safariImages, safariActivities, activities } from "../db/schema";
-import { eq, sql } from "drizzle-orm";
+import { eq, sql, and } from "drizzle-orm";
 import type { Env, Variables } from "../types";
 
 const safari = new Hono<{ Bindings: Env; Variables: Variables }>();
 
 safari.get("/", async (c) => {
-  const page = parseInt(c.req.query("page") || "0");
-  const size = parseInt(c.req.query("size") || "12");
+  const page = safeInt(c.req.query("page"), 0);
+  const size = safeInt(c.req.query("size"), 12, 1, 50);
 
   const db = getDb(c.env.DATABASE_URL);
   const where = eq(safaris.isPublished, true);
@@ -29,7 +29,9 @@ safari.get("/", async (c) => {
 safari.get("/:slug", async (c) => {
   const slug = c.req.param("slug");
   const db = getDb(c.env.DATABASE_URL);
-  const [item] = await db.select().from(safaris).where(eq(safaris.slug, slug)).limit(1);
+  const [item] = await db.select().from(safaris)
+    .where(and(eq(safaris.slug, slug), eq(safaris.isPublished, true)))
+    .limit(1);
   if (!item) return err("Safari not found", 404);
 
   const images = await db.select().from(safariImages)

@@ -1,7 +1,7 @@
 import { Hono } from "hono";
-import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import type { Env, Variables } from "./types";
+import { corsMiddleware, securityHeaders } from "./middleware/security";
 
 import auth from "./routes/auth";
 import destinations from "./routes/destinations";
@@ -21,11 +21,8 @@ import admUser from "./routes/admin/users";
 const app = new Hono<{ Bindings: Env; Variables: Variables }>();
 
 app.use("*", logger());
-app.use("*", cors({
-  origin: "*",
-  allowMethods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowHeaders: ["Content-Type", "Authorization"],
-}));
+app.use("*", securityHeaders);
+app.use("*", corsMiddleware);
 
 app.get("/", (c) => c.json({ name: "Trek Rwanda API", version: "1.0.0", status: "ok" }));
 app.get("/health", (c) => c.json({ status: "ok", timestamp: new Date().toISOString() }));
@@ -48,8 +45,9 @@ app.route("/api/admin/users", admUser);
 app.notFound((c) => c.json({ success: false, error: "Not found" }, 404));
 
 app.onError((err, c) => {
-  console.error("Unhandled error:", err.message, err.stack);
-  return c.json({ success: false, error: err.message || "Internal server error" }, 500);
+  console.error("Unhandled error:", err.name, err.message, err.stack);
+  c.header("X-Error-Code", "INTERNAL");
+  return c.json({ success: false, error: "Internal server error" }, 500);
 });
 
 export default app;

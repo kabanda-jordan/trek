@@ -16,6 +16,15 @@ export function err(message: string, status = 400) {
   }, { status });
 }
 
+export function safeInt(value: string | undefined | null, fallback: number, min = 0, max = 100000): number {
+  if (value === undefined || value === null || value === "") return fallback;
+  const n = Math.floor(Number(value));
+  if (!Number.isFinite(n)) return fallback;
+  if (n < min) return min;
+  if (n > max) return max;
+  return n;
+}
+
 export function paginate<T>(
   content: T[],
   totalElements: number,

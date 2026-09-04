@@ -6,11 +6,12 @@ import { getDb } from "../db";
 import { users } from "../db/schema";
 import { eq } from "drizzle-orm";
 import { authMiddleware } from "../middleware/auth";
+import { loginRateLimit, rateLimit } from "../middleware/security";
 import type { Env, Variables } from "../types";
 
 const auth = new Hono<{ Bindings: Env; Variables: Variables }>();
 
-auth.post("/register", async (c) => {
+auth.post("/register", loginRateLimit(), async (c) => {
   const body = await c.req.json();
   const { name, email, password, phone } = body;
 
@@ -20,16 +21,27 @@ auth.post("/register", async (c) => {
   if (password.length < 6) {
     return err("Password must be at least 6 characters");
   }
+  if (typeof email !== "string" || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return err("A valid email address is required");
+  }
+  if (typeof name !== "string" || name.length > 100) {
+    return err("Name must be a string under 100 characters");
+  }
+
+  const emailNormalized = typeof email === "string" ? email.toLowerCase().trim() : "";
+  if (!emailNormalized) {
+    return err("A valid email address is required");
+  }
 
   const db = getDb(c.env.DATABASE_URL);
-  const existing = await db.select().from(users).where(eq(users.email, email)).limit(1);
+  const existing = await db.select().from(users).where(eq(users.email, emailNormalized)).limit(1);
   if (existing.length > 0) {
     return err("Email already registered");
   }
 
   const passwordHash = await hashPassword(password);
   const [user] = await db.insert(users).values({
-    name, email, passwordHash, phone: phone || null, role: "CUSTOMER", isActive: true,
+    name, email: emailNormalized, passwordHash, phone: phone || null, role: "CUSTOMER", isActive: true,
   }).returning();
 
   const token = await signToken(user.email, user.role, c.env.JWT_SECRET);
@@ -41,7 +53,7 @@ auth.post("/register", async (c) => {
   }, "Registration successful");
 });
 
-auth.post("/login", async (c) => {
+auth.post("/login", loginRateLimit(), async (c) => {
   const body = await c.req.json();
   const { email, password } = body;
 
@@ -50,7 +62,7 @@ auth.post("/login", async (c) => {
   }
 
   const db = getDb(c.env.DATABASE_URL);
-  const [user] = await db.select().from(users).where(eq(users.email, email)).limit(1);
+  const [user] = await db.select().from(users).where(eq(users.email, email.toLowerCase())).limit(1);
 
   if (!user) {
     return err("Bad credentials", 401);

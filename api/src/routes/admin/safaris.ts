@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { ok, err, paginate } from "../../lib/response";
+import { ok, err, paginate, safeInt } from "../../lib/response";
 import { toSlug } from "../../lib/slug";
 import { getDb } from "../../db";
 import { safaris } from "../../db/schema";
@@ -11,8 +11,8 @@ const admSafari = new Hono<{ Bindings: Env; Variables: Variables }>();
 admSafari.use("*", authMiddleware, adminMiddleware);
 
 admSafari.get("/", async (c) => {
-  const page = parseInt(c.req.query("page") || "0");
-  const size = parseInt(c.req.query("size") || "20");
+  const page = safeInt(c.req.query("page"), 0);
+  const size = safeInt(c.req.query("size"), 20, 1, 50);
   const db = getDb(c.env.DATABASE_URL);
 
   const [countResult] = await db.select({ count: sql<number>`count(*)::int` }).from(safaris);

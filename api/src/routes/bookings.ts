@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { ok, err, paginate } from "../lib/response";
+import { ok, err, paginate, safeInt } from "../lib/response";
 import { getDb } from "../db";
 import { bookings } from "../db/schema";
 import { eq, sql, desc } from "drizzle-orm";
@@ -47,8 +47,8 @@ bk.post("/", async (c) => {
 
 bk.get("/my", async (c) => {
   const user = c.get("user");
-  const page = parseInt(c.req.query("page") || "0");
-  const size = parseInt(c.req.query("size") || "10");
+  const page = safeInt(c.req.query("page"), 0);
+  const size = safeInt(c.req.query("size"), 10, 1, 50);
 
   const db = getDb(c.env.DATABASE_URL);
   const where = eq(bookings.userId, user.id);
